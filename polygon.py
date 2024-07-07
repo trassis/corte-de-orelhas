@@ -1,16 +1,16 @@
 from geometry import angle, in_triangle
 
 class Polygon:
-    def __init__(self, file_name = ''):
-        self.size = 0
-        self.points = []
+    def __init__(self, file_name='', points=None):
+        if points is None:
+            self.size = 0
+            self.points = []
+        else:
+            self.size = len(points)
+            self.points = points
 
         if file_name != '':
             self.read_from_file(file_name)
-
-    def __init__(self, points):
-        self.size = points.size()
-        self.points = points
 
     # Obtem um poligono representado em um arquivo
     def read_from_file(self, file_name):
@@ -41,6 +41,10 @@ class Polygon:
                 return False
 
         return True
+
+    def add_point(self, x, y):
+        self.size += 1
+        self.points.append((x, y))
 
     def remove_vertex(self, idx):
         return self.points.remove(idx)
