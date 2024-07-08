@@ -1,5 +1,10 @@
 from geometry import angle, in_triangle
 
+class Point:
+    def __init__(self, x, y):
+        self.point.x = x
+        self.point.y = y
+
 class Polygon:
     def __init__(self, file_name='', points=None):
         if points is None:
@@ -30,7 +35,7 @@ class Polygon:
         point = self.points[idx]
         next_point = self.points[idx+1]
 
-        # Verifica se o angulo entre os pontos é à esquerda
+        # Verifica se o angulo entre os pontos é a esquerda
         if angle(previous_point, point, next_point) >= 0:
             return False
 
@@ -42,9 +47,9 @@ class Polygon:
 
         return True
 
-    def add_point(self, x, y):
+    def add_point(self, Point):
         self.size += 1
-        self.points.append((x, y))
+        self.points.append(Point)
 
     def remove_vertex(self, idx):
         return self.points.remove(idx)
