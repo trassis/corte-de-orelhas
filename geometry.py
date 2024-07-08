@@ -1,14 +1,22 @@
-from polygon import Point
 
-# retorna sinal do ângulo entre os segmentos P0P2, P1P2
-def angle(Point0, Point1, Point2):
-    return (Point0.x - Point2.x)*(Point1.y - Point2.y) - \
-           (Point0.y - Point2.y)*(Point1.x - Point2.x)
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-def in_triangle(Point, triangle):
-    signal_1 = angle(Point, triangle[0], triangle[1])
-    signal_2 = angle(Point, triangle[1], triangle[2])
-    signal_3 = angle(Point, triangle[0], triangle[2])
 
-    return not ((signal_1 > 0 or signal_2 > 0 or signal_3 > 0) and \
-            (signal_1 < 0 or signal_2 < 0 or signal_3 < 0))
+def angle(p1, p2, p3) :
+    return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+
+
+def in_triangle (pt, triangle):
+
+    signal1 = angle(pt, triangle[0], triangle[1]);
+    signal2 = angle(pt, triangle[1], triangle[2]);
+    signal3 = angle(pt, triangle[2], triangle[0]);
+
+    has_neg = (signal1 < 0) or (signal2 < 0) or (signal3 < 0);
+    has_pos = (signal1 > 0) or (signal2 > 0) or (signal3 > 0);
+
+    return not(has_neg and has_pos);
+

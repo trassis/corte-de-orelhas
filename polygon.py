@@ -1,9 +1,5 @@
 from geometry import angle, in_triangle
 
-class Point:
-    def __init__(self, x, y):
-        self.point.x = x
-        self.point.y = y
 
 class Polygon:
     def __init__(self, file_name='', points=None):
@@ -36,7 +32,7 @@ class Polygon:
         next_point = self.points[idx+1]
 
         # Verifica se o angulo entre os pontos é a esquerda
-        if angle(previous_point, point, next_point) >= 0:
+        if angle(previous_point, point, next_point) > 0:
             return False
 
         # Verifica se há algum ponto dentro do triangulo
