@@ -123,9 +123,14 @@ class Ear_clipping:
         self.frame_list = self.frame_list[:2]
         print(len(self.frame_list))
         for frame in self.frame_list:
-            html_string += "\t\t"
-            html_string += frame.generate_svg()
-            html_string += ",\n"
+            lines = frame.generate_svg()
+            for i, line in enumerate(lines):
+                if i == 0:
+                    html_string += '`'
+                html_string += line
+                if i < len(lines)-1:
+                    html_string += ' /\n';
+            html_string += '`'
 
         html_string += """ 
                 ];
