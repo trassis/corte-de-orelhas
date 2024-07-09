@@ -118,18 +118,14 @@ class Ear_clipping:
             </style>
             <script>
                 var svgContent = [
-                    '<polygon points="100,100 150,25 200,100"/> \
-                     <circle cx="100" cy="100" r="3" fill="red" /> \
-                     <circle cx="150" cy="25" r="3" fill="red" /> \
-                     <circle cx="200" cy="100" r="3" fill="red" />',
-                    '<polygon points="10,10 20,25 200,100"/> \
-                     <circle cx="10" cy="10" r="3" fill="red" /> \
-                     <circle cx="20" cy="25" r="3" fill="red" /> \
-                     <circle cx="200" cy="100" r="3" fill="red" />',
-                    '<polygon points="10,120 200,20 20,300"/> \
-                     <circle cx="10" cy="120" r="3" fill="red" /> \
-                     <circle cx="200" cy="20" r="3" fill="red" /> \
-                     <circle cx="20" cy="300" r="3" fill="red" />',
+        """
+
+        for frame in self.frame_list:
+            html_string += "\t"
+            html_string += frame.generate_svg()
+            html_string += ",\n"
+
+        html_string += """ 
                 ];
 
                 var currentIndex = 0;
