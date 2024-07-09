@@ -61,26 +61,26 @@
         
         // Create a permanent polygon element
         var permanent = createPolygon(polygons[0], "permanent");
-        svg.appendChild(permanent);
+        svg.innerHTML += `<polygon points="${polygons[0].map(point => `${point.x},${point.y}`).join(" ")}" class="permanent"></polygon>`;
         permanent.setAttribute("class", "permanent");
         
         polygons[0].forEach(point => {
             var circle = createCircle(point.x, point.y);
             circle.setAttribute("class", "pointer");
-            svg.appendChild(circle, "pointer");
+            svg.innerHTML += `<circle cx="${point.x}" cy="${point.y}" r="5" class="pointer"></circle>`;
         });
 
 
         // Create the current polygon element
         var current = createPolygon(polygons[currentIndex], "polygon");
-        svg.appendChild(current);
+        svg.innerHTML += `<polygon points="${polygons[currentIndex].map(point => `${point.x},${point.y}`).join(" ")}" class="polygon"></polygon>`;
         current.setAttribute("class", "polygon");
 
                // Add points as circle elements for the current polygon
-               polygons[currentIndex].forEach(point => {
+        polygons[currentIndex].forEach(point => {
             var circle = createCircle(point.x, point.y);
             circle.setAttribute("class", "point");
-            svg.appendChild(circle, "point");
+            svg.innerHTML += `<circle cx="${point.x}" cy="${point.y}" r="5" class="point"></circle>`;
         });
 
 

@@ -1,6 +1,7 @@
 from polygon import Polygon
 
 class Frame:
+ 
     def __init__(self, polygon, ear_list):
         if not isinstance(polygon, Polygon):
             raise TypeError("Object polygon should be of class Polygon")
@@ -21,7 +22,18 @@ class Frame:
         self.vertex_type[idx] = new_type
 
     def generate_svg(self):
-        raise NotImplementedError("Subclass must implement abstract method")
+        svg_content = ''
+
+        # Create the polygon element
+        points_string = ' '.join([f'{point.x},{point.y}' for point in self.polygon])
+        svg_content += f'<polygon points="{points_string}" class="polygon"></polygon>\n'
+        
+        # Create circles for each vertex with corresponding classes
+        for i, point in enumerate(self.polygon):
+            vertex_class = self.vertex_type[i]
+            svg_content += f'<circle cx="{point.x}" cy="{point.y}" r="5" class="{vertex_class}_point"></circle>\n'
+
+        return svg_content
 
 class Ear_Frame(Frame):
     def __init__(self, polygon, ear_list, idx):
@@ -38,8 +50,13 @@ class Ear_Frame(Frame):
         self.set_vertex_type(next_idx, "red")
 
     def generate_svg(self):
-        pass
+        svg_content = super().generate_svg(self)
+        svg_content += f'<line x1="{self.polygon[self.endpoint1].x}" y1="{self.polygon[self.endpoint1].y}" '
+        svg_content += f'x2="{self.polygon[self.endpoint2].x}" y2="{self.polygon[self.endpoint2].y}" '
+        
 
 class Neighbor_Frame(Frame):
     def generate_svg(self):
         pass
+
+
