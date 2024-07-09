@@ -8,13 +8,11 @@ class Ear_clipping:
         current_polygon = self.polygon_list[0]
 
         for i in range(current_polygon.get_size()):
-            print("yes")
             if current_polygon.is_ear(i):
-                print("yes")
-                new_points = current_polygon.remove_vertex(i)
-                current_polygon = Polygon(new_points)
-                self.polygon_list.append(current_polygon)
+                new_polygon = current_polygon.removed_vertex(i)
+                self.polygon_list.append(new_polygon)
+                current_polygon = new_polygon
     
     def get_polygons(self):
         return self.polygon_list
-            
+    

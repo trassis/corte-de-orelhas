@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Styled Polygons in SVG</title>
+    <style>
+        /* CSS styles for the SVG container */
+        #svgelem {
+            border: 1px solid #ccc;
+        }
+
+        /* Additional CSS styles */
+        .polygon {
+            fill: blue; /* Fill color */
+            stroke: black; /* Stroke color */
+            stroke-width: 2; /* Stroke width */
+            stroke-opacity: 0.8; /* Stroke opacity */
+            fill-opacity: 0.0; /* Fill opacity */
+            stroke-linecap: round; /* Stroke linecap */
+            stroke-linejoin: round; /* Stroke linejoin */
+        }
+    </style>
+    <script>
+        // Predefined polygons (array of arrays of points)
+        var polygons = [
+            [ { x: 50, y: 50 }, { x: 150, y: 50 }, { x: 150, y: 150 }, { x: 50, y: 150 } ], // Polygon 1
+            [ { x: 100, y: 100 }, { x: 200, y: 100 }, { x: 200, y: 200 }, { x: 100, y: 200 } ], // Polygon 2
+            [ { x: 50, y: 100 }, { x: 100, y: 50 }, { x: 150, y: 100 }, { x: 100, y: 150 } ], // Polygon 3
+            [ { x : 200, y :100 }, { x:  200,y: 50},  {x:250,y:150},  {x:200,y:200},  {x:100,y:200}, {x:50,y:150 }]
+            // Add more polygons as needed
+        ];
+
+        var currentIndex = 0; // Index to track current polygon
+
+        function displayPolygon() {
+            // Get the SVG element by its ID
+            var svg = document.getElementById("svgelem");
+            svg.innerHTML = ""; // Clear previous content
+
+            // Create a new polygon element
+            var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+
+            // Convert points array to a string format
+            var pointsString = polygons[currentIndex].map(point => `${point.x},${point.y}`).join(" ");
+            polygon.setAttribute("points", pointsString);
+
+            // Set class attribute to apply CSS styles
+            polygon.setAttribute("class", "polygon");
+
+            // Append the polygon element to the SVG
+            svg.appendChild(polygon);
+
+            // Update current polygon index display
+            document.getElementById("currentPolygon").textContent = currentIndex + 1;
+        }
+
+        function nextPolygon() {
+            currentIndex = (currentIndex + 1) % polygons.length; // Move to the next polygon circularly
+            displayPolygon(); // Display the new polygon
+        }
+
+        function previousPolygon() {
+            currentIndex = (currentIndex - 1 + polygons.length) % polygons.length; // Move to the previous polygon circularly
+            displayPolygon(); // Display the new polygon
+        }
+    </script>
+</head>
+<body>
+    <h2>Styled Polygons in SVG</h2>
+    <svg id="svgelem" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+        <!-- SVG content will be dynamically added here -->
+    </svg>
+    <br>
+    <button onclick="previousPolygon()">Previous Polygon</button>
+    <button onclick="nextPolygon()">Next Polygon</button>
+    <br>
+    <p>Current Polygon: <span id="currentPolygon"></span></p>
+
+    <script>
+        // Initial display of the first polygon
+        displayPolygon();
+    </script>
+</body>
+</html>

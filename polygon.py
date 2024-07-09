@@ -28,7 +28,7 @@ class Polygon:
 
     # Retorna se o ponto no índice idx é uma orelha
     def is_ear(self, idx):
-        if self.size < 3:
+        if self.size <= 3:
             return False
 
         previous_point = self.points[idx-1 if idx-1>=0 else self.size-1]
@@ -45,16 +45,17 @@ class Polygon:
             if point == previous_point or point == point or point == next_point:
                 continue
             if in_triangle(point, triangle):
-                print("retornei")
                 return False
 
         return True
 
-    def add_point(self, Point):
+    def add_vertex(self, Point):
         self.size += 1
         self.points.append(Point)
 
-    def remove_vertex(self, idx):
-        print(idx, self.size)
-        new_points = self.points.pop(idx)
-        return new_points
+    def removed_vertex(self, idx):
+        new_points = []
+        for i, pt in enumerate(self.points):
+            if i != idx:
+                new_points.append(Point(pt.x, pt.y))
+        return Polygon('', new_points)
