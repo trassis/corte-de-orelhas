@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Styled Polygons in SVG</title>
+    <title>Triangulação de polígonos</title>
     <style>
         /* CSS styles for the SVG container */
         #svgelem {
@@ -10,14 +10,37 @@
 
         /* Additional CSS styles */
         .polygon {
-            fill: blue; /* Fill color */
-            stroke: black; /* Stroke color */
+            fill: #ada6db; /* Fill color */
+            stroke: #2a2a2a; /* Stroke color */
             stroke-width: 2; /* Stroke width */
-            stroke-opacity: 0.8; /* Stroke opacity */
-            fill-opacity: 0.0; /* Fill opacity */
+            stroke-opacity: 1; /* Stroke opacity */
+            fill-opacity: 1; /* Fill opacity */
             stroke-linecap: round; /* Stroke linecap */
             stroke-linejoin: round; /* Stroke linejoin */
         }
+
+        .permanent{ 
+            fill: rgb(178, 178, 198); /* Fill color */
+            stroke: #908f8f; /* Stroke color */
+            stroke-width: 2; /* Stroke width */
+            stroke-opacity: 0.7; /* Stroke opacity */
+            fill-opacity: 0.4; /* Fill opacity */
+            stroke-linecap: round; /* Stroke linecap */
+            stroke-linejoin: round; /* Stroke linejoin */
+        }
+
+
+        .point {
+            fill: #2a2a2a; /* Point color */
+            stroke: none; /* No border */
+        }
+
+        .pointer {
+            fill: #727374; /* Point color */
+            stroke: none; /* No border */
+        }
+
+
     </style>
     <script>
         // Predefined polygons (array of arrays of points)
@@ -31,41 +54,71 @@
 
         var currentIndex = 0; // Index to track current polygon
 
-        function displayPolygon() {
-            // Get the SVG element by its ID
-            var svg = document.getElementById("svgelem");
-            svg.innerHTML = ""; // Clear previous content
+    function displayPolygon() {
+        // Get the SVG element by its ID
+        var svg = document.getElementById("svgelem");
+        svg.innerHTML = ""; // Clear previous content
+        
+        // Create a permanent polygon element
+        var permanent = createPolygon(polygons[0], "permanent");
+        svg.appendChild(permanent);
+        permanent.setAttribute("class", "permanent");
+        
+        polygons[0].forEach(point => {
+            var circle = createCircle(point.x, point.y);
+            circle.setAttribute("class", "pointer");
+            svg.appendChild(circle, "pointer");
+        });
 
-            // Create a new polygon element
-            var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
 
-            // Convert points array to a string format
-            var pointsString = polygons[currentIndex].map(point => `${point.x},${point.y}`).join(" ");
-            polygon.setAttribute("points", pointsString);
+        // Create the current polygon element
+        var current = createPolygon(polygons[currentIndex], "polygon");
+        svg.appendChild(current);
+        current.setAttribute("class", "polygon");
 
-            // Set class attribute to apply CSS styles
-            polygon.setAttribute("class", "polygon");
+               // Add points as circle elements for the current polygon
+               polygons[currentIndex].forEach(point => {
+            var circle = createCircle(point.x, point.y);
+            circle.setAttribute("class", "point");
+            svg.appendChild(circle, "point");
+        });
 
-            // Append the polygon element to the SVG
-            svg.appendChild(polygon);
 
             // Update current polygon index display
             document.getElementById("currentPolygon").textContent = currentIndex + 1;
-        }
+    }
 
-        function nextPolygon() {
-            currentIndex = (currentIndex + 1) % polygons.length; // Move to the next polygon circularly
-            displayPolygon(); // Display the new polygon
-        }
+        // Function to create a polygon element
+    function createPolygon(points) {
+        var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        var pointsString = points.map(point => `${point.x},${point.y}`).join(" ");
+        polygon.setAttribute("points", pointsString);
+        return polygon;
+    }
+
+    // Function to create a circle element for points
+    function createCircle(cx, cy) {
+        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", cx);
+        circle.setAttribute("cy", cy);
+        circle.setAttribute("r", 5); // Radius of the point
+        return circle;
+    }
+
+    function nextPolygon() {
+        currentIndex = (currentIndex + 1) % polygons.length; // Move to the next polygon circularly
+        displayPolygon(); // Display the new polygon
+    }
 
         function previousPolygon() {
             currentIndex = (currentIndex - 1 + polygons.length) % polygons.length; // Move to the previous polygon circularly
             displayPolygon(); // Display the new polygon
         }
+
     </script>
 </head>
 <body>
-    <h2>Styled Polygons in SVG</h2>
+    <h2>Triangulação de polígonos</h2>
     <svg id="svgelem" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
         <!-- SVG content will be dynamically added here -->
     </svg>
