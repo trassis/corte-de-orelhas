@@ -1,4 +1,4 @@
-from polygon import Polygon
+from frame import Frame, Ear_Frame
 
 # Retorna índice da primeira verdade em um lista de Bool
 def search_true(x):
@@ -10,24 +10,61 @@ def search_true(x):
 class Ear_clipping:
     def __init__(self, initial_polygon):
         self.polygon_list = [initial_polygon]
+        self.frame_list = []
 
     def triangulation(self):
         current_polygon = self.polygon_list[0]
-        ear_list = [ current_polygon.is_ear(i) for i in range(current_polygon.get_size()) ]
+        ear_list = [False] * current_polygon.get_size()
 
-        print(current_polygon.get_size())
-        print(ear_list)
+        # Para cada verificação, adiciona 2 frames
+        for i in range(current_polygon.get_size()):
+            verify_frame = Ear_Frame(current_polygon, ear_list, i)
+            self.frame_list.append(verify_frame)
+
+            response_frame = Ear_Frame(current_polygon, ear_list, i)
+
+            if current_polygon.is_ear(i):
+                ear_list[i] = True
+                response_frame.set_vertex_type(i, "green")
+            else:
+                response_frame.set_vertex_type(i, "black")
+
+            self.frame_list.append(response_frame)
+
 
         while current_polygon.get_size() > 3:
             to_be_removed = search_true(ear_list)
+            print("oi")
+
+            # Marca que vértice será removido
+            removed_frame = Frame(current_polygon, ear_list)
+            removed_frame.set_vertex_type(to_be_removed, "red")
+            self.frame_list.append(removed_frame)
+
             ear_list.pop(to_be_removed)
             new_polygon = current_polygon.removed_vertex(to_be_removed)
 
+            # Vértice foi removido
+            new_polygon_frame = Frame(new_polygon, ear_list)
+            self.frame_list.append(new_polygon_frame)
+
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
             next_index = to_be_removed if to_be_removed < new_polygon.get_size()-1 else 0
+            list_index = [ previous_index, next_index ]
 
-            ear_list[previous_index] = new_polygon.is_ear(previous_index)
-            ear_list[next_index] = new_polygon.is_ear(next_index)
+            for idx in list_index:
+                verify_frame = Ear_Frame(new_polygon, ear_list, idx)
+                self.frame_list.append(verify_frame)
+
+                ear_list[idx] = new_polygon.is_ear(idx)
+
+                response_frame = Ear_Frame(new_polygon, ear_list, idx)
+                if ear_list[idx]:
+                    response_frame.set_vertex_type(idx, "red")
+                else:
+                    response_frame.set_vertex_type(idx, "black")
+                self.frame_list.append(response_frame)
+
 
             current_polygon = new_polygon
             self.polygon_list.append(current_polygon)

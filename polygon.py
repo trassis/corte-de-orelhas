@@ -12,7 +12,6 @@ class Polygon:
 
         if file_name != '':
             self.read_from_file(file_name)
-        
 
     # Obtem um poligono representado em um arquivo
     def read_from_file(self, file_name):
