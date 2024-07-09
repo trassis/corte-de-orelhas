@@ -1,4 +1,4 @@
-from geometry import angle, in_triangle
+from geometry import angle, in_triangle, Point
 
 
 class Polygon:
@@ -12,6 +12,7 @@ class Polygon:
 
         if file_name != '':
             self.read_from_file(file_name)
+        
 
     # Obtem um poligono representado em um arquivo
     def read_from_file(self, file_name):
@@ -20,16 +21,19 @@ class Polygon:
             self.size = int(file.readline().strip())
             for _ in range(self.size):
                 x, y = map(int, file.readline().strip().split())
-                self.points.append((x,y))
+                self.points.append(Point(x,y))
+
+    def get_size(self):
+        return self.size
 
     # Retorna se o ponto no índice idx é uma orelha
     def is_ear(self, idx):
         if self.size < 3:
             return False
 
-        previous_point = self.points[idx-1]
+        previous_point = self.points[idx-1 if idx-1>=0 else self.size-1]
         point = self.points[idx]
-        next_point = self.points[idx+1]
+        next_point = self.points[idx+1 if idx+1 < self.size else 0]
 
         # Verifica se o angulo entre os pontos é a esquerda
         if angle(previous_point, point, next_point) > 0:
@@ -38,7 +42,10 @@ class Polygon:
         # Verifica se há algum ponto dentro do triangulo
         triangle = [ previous_point, point, next_point ]
         for point in self.points:
+            if point == previous_point or point == point or point == next_point:
+                continue
             if in_triangle(point, triangle):
+                print("retornei")
                 return False
 
         return True
@@ -48,4 +55,6 @@ class Polygon:
         self.points.append(Point)
 
     def remove_vertex(self, idx):
-        return self.points.remove(idx)
+        print(idx, self.size)
+        new_points = self.points.pop(idx)
+        return new_points
