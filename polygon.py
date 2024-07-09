@@ -23,6 +23,33 @@ class Polygon:
                 x, y = map(int, file.readline().strip().split())
                 self.points.append(Point(x,y))
 
+    def read_from_pol(self, file_path):
+        self.points = []
+        with open(file_path, 'r') as file:
+            line = file.readline().strip()
+
+            # Split the line into parts
+            parts = line.split()
+
+            # The first part is N
+            N = int(parts[0])
+            self.size = N
+
+            # The remaining parts are coordinates
+            coordinates = parts[1:]
+
+            # Ensure there are the correct number of coordinate pairs
+            if len(coordinates) != 2 * N:
+                raise ValueError(f"Expected {2 * N} coordinate parts, but got {len(coordinates)}")
+
+            for i in range(N):
+                p, q = map(int, coordinates[2 * i].split('/'))
+                r, s = map(int, coordinates[2 * i + 1].split('/'))
+                x = p / q
+                y = r / s
+                self.points.append(Point(x, y))
+
+
     def get_size(self):
         return self.size
 
@@ -31,18 +58,17 @@ class Polygon:
         if self.size <= 3:
             return False
 
-        previous_point = self.points[idx-1 if idx-1>=0 else self.size-1]
-        point = self.points[idx]
-        next_point = self.points[idx+1 if idx+1 < self.size else 0]
+        previous_idx = idx-1 if idx>0 else self.size-1
+        next_idx = idx+1 if idx+1 < self.size else 0
 
         # Verifica se o angulo entre os pontos é a esquerda
-        if angle(previous_point, point, next_point) > 0:
+        if angle(self.points[previous_idx], self.points[idx], self.points[next_idx]) <= 0:
             return False
 
         # Verifica se há algum ponto dentro do triangulo
-        triangle = [ previous_point, point, next_point ]
-        for point in self.points:
-            if point == previous_point or point == point or point == next_point:
+        triangle = [ self.points[previous_idx], self.points[idx], self.points[next_idx] ]
+        for i, point in enumerate(self.points):
+            if i == previous_idx or i == idx or i == next_idx:
                 continue
             if in_triangle(point, triangle):
                 return False
