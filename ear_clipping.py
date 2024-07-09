@@ -34,7 +34,6 @@ class Ear_clipping:
 
         while current_polygon.get_size() > 3:
             to_be_removed = search_true(ear_list)
-            print("oi")
 
             # Marca que vértice será removido
             removed_frame = Frame(current_polygon, ear_list)
@@ -73,5 +72,99 @@ class Ear_clipping:
         return self.polygon_list
 
     def generate_html(self):
-        pass
-    
+        html_string = """<!DOCTYPE html>
+        <html>
+        <head>
+            <title>Triangulação de polígonos</title>
+            <style>
+                /* CSS styles for the SVG container */
+                #svgelem {
+                    border: 1px solid #ccc;
+                }
+
+                /* Additional CSS styles */
+                .polygon {
+                    fill: #ada6db; /* Fill color */
+                    stroke: #2a2a2a; /* Stroke color */
+                    stroke-width: 2; /* Stroke width */
+                    stroke-opacity: 1; /* Stroke opacity */
+                    fill-opacity: 1; /* Fill opacity */
+                    stroke-linecap: round; /* Stroke linecap */
+                    stroke-linejoin: round; /* Stroke linejoin */
+                }
+
+                .permanent{
+                    fill: rgb(178, 178, 198); /* Fill color */
+                    stroke: #908f8f; /* Stroke color */
+                    stroke-width: 2; /* Stroke width */
+                    stroke-opacity: 0.7; /* Stroke opacity */
+                    fill-opacity: 0.4; /* Fill opacity */
+                    stroke-linecap: round; /* Stroke linecap */
+                    stroke-linejoin: round; /* Stroke linejoin */
+                }
+
+
+                .point {
+                    fill: #2a2a2a; /* Point color */
+                    stroke: none; /* No border */
+                }
+
+                .pointer {
+                    fill: #727374; /* Point color */
+                    stroke: none; /* No border */
+                }
+
+
+            </style>
+            <script>
+                var svgContent = [
+                    '<polygon points="100,100 150,25 200,100"/> \
+                     <circle cx="100" cy="100" r="3" fill="red" /> \
+                     <circle cx="150" cy="25" r="3" fill="red" /> \
+                     <circle cx="200" cy="100" r="3" fill="red" />',
+                    '<polygon points="10,10 20,25 200,100"/> \
+                     <circle cx="10" cy="10" r="3" fill="red" /> \
+                     <circle cx="20" cy="25" r="3" fill="red" /> \
+                     <circle cx="200" cy="100" r="3" fill="red" />',
+                    '<polygon points="10,120 200,20 20,300"/> \
+                     <circle cx="10" cy="120" r="3" fill="red" /> \
+                     <circle cx="200" cy="20" r="3" fill="red" /> \
+                     <circle cx="20" cy="300" r="3" fill="red" />',
+                ];
+
+                var currentIndex = 0;
+
+                function displayPolygon(){
+                    var svg = document.getElementById('svgelem');
+                    svg.innerHTML = svgContent[currentIndex];
+                }
+
+                function nextPolygon() {
+                    currentIndex = (currentIndex + 1) % svgContent.length; // Move to the next polygon circularly
+                    displayPolygon(); // Display the new polygon
+                }
+
+                function previousPolygon() {
+                    currentIndex = (currentIndex - 1 + svgContent.length) % svgContent.length; // Move to the previous polygon circularly
+                    displayPolygon(); // Display the new polygon
+                }
+            </script>
+        </head>
+        <body>
+            <h2>Triangulação de polígonos</h2>
+            <svg id="svgelem" width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+            </svg>
+            <br>
+            <button onclick="previousPolygon()">Previous Polygon</button>
+            <button onclick="nextPolygon()">Next Polygon</button>
+            <br>
+            <p>Current Polygon: <span id="currentPolygon"></span></p>
+
+            <script>
+                // Initial display of the first polygon
+                displayPolygon();
+            </script>
+        </body>
+        </html>"""
+
+        return html_string
