@@ -16,7 +16,7 @@ class Frame:
             if ear_list[i]:
                 self.set_vertex_type(i, "blue")
         
-        self.scale = 50
+        self.scale = 20
 
     def set_vertex_type(self, idx, new_type):
         if idx >= len(self.vertex_type):
@@ -26,13 +26,13 @@ class Frame:
     def generate_svg(self):
         # Create the polygon element
         svg_content = []
-        points_string = ' '.join([f'{point.x},{point.y}' for point in self.polygon.points])
-        svg_content.append(f'<polygon points="{points_string}" class="polygon" \>')
+        points_string = ' '.join([f'{point.x*self.scale},{point.y*self.scale}' for point in self.polygon.points])
+        svg_content.append(f'<polygon points="{points_string}" class="polygon"/>')
         
         # Create circles for each vertex with corresponding classes
         for i, point in enumerate(self.polygon.points):
             vertex_class = self.vertex_type[i]
-            svg_content.append(f'<circle cx="{point.x*self.scale}" cy="{point.y*self.scale}" r="5" class="{vertex_class}_point" \>')
+            svg_content.append(f'<circle cx="{point.x*self.scale}" cy="{point.y*self.scale}" r="5" class="{vertex_class}_point"/>')
 
         return svg_content
 
@@ -52,8 +52,11 @@ class Ear_Frame(Frame):
 
     def generate_svg(self):
         svg_content = super().generate_svg()
-        svg_content.append(f'<line x1="{self.polygon.points[self.endpoint1].x}" y1="{self.polygon.points[self.endpoint1].y}" ')
-        svg_content.append(f'x2="{self.polygon.points[self.endpoint2].x * super().scale}" y2="{self.polygon.points[self.endpoint2].y * super().scale}" \>')
+        x1 = self.polygon.points[self.endpoint1].x * self.scale
+        y1 = self.polygon.points[self.endpoint1].y * self.scale
+        x2 = self.polygon.points[self.endpoint2].x * self.scale
+        y2 = self.polygon.points[self.endpoint2].y * self.scale
+        svg_content.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="line_style"/>')
 
         return svg_content
 
