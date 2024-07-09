@@ -23,7 +23,7 @@ class Frame:
 
     def generate_svg(self):
         # Create the polygon element
-        points_string = ' '.join([f'{point.x},{point.y}' for point in self.polygon])
+        points_string = ' '.join([f'{point.x},{point.y}' for point in self.polygon.points])
         svg_content = f'<polygon points="{points_string}" class="polygon" /> / \n'
         
         # Create circles for each vertex with corresponding classes
@@ -48,9 +48,9 @@ class Ear_Frame(Frame):
         self.set_vertex_type(next_idx, "red")
 
     def generate_svg(self):
-        svg_content = super().generate_svg(self)
-        svg_content += f'\t\t\t<line x1="{self.polygon[self.endpoint1].x}" y1="{self.polygon[self.endpoint1].y}" '
-        svg_content += f'x2="{self.polygon[self.endpoint2].x}" y2="{self.polygon[self.endpoint2].y}" /> / \n'
+        svg_content = super().generate_svg()
+        svg_content += f'\t\t\t<line x1="{self.polygon.points[self.endpoint1].x}" y1="{self.polygon.points[self.endpoint1].y}" '
+        svg_content += f'x2="{self.polygon.points[self.endpoint2].x}" y2="{self.polygon.points[self.endpoint2].y}" /> / \n'
 
         return svg_content
 

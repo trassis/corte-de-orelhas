@@ -120,8 +120,10 @@ class Ear_clipping:
                 var svgContent = [
         """
 
+        self.frame_list = self.frame_list[:2]
+        print(len(self.frame_list))
         for frame in self.frame_list:
-            html_string += "\t"
+            html_string += "\t\t"
             html_string += frame.generate_svg()
             html_string += ",\n"
 
