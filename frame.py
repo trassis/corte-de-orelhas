@@ -22,16 +22,14 @@ class Frame:
         self.vertex_type[idx] = new_type
 
     def generate_svg(self):
-        svg_content = ''
-
         # Create the polygon element
         points_string = ' '.join([f'{point.x},{point.y}' for point in self.polygon])
-        svg_content += f'<polygon points="{points_string}" class="polygon"></polygon> / \n'
+        svg_content = f'<polygon points="{points_string}" class="polygon" /> / \n'
         
         # Create circles for each vertex with corresponding classes
         for i, point in enumerate(self.polygon):
             vertex_class = self.vertex_type[i]
-            svg_content += f'<circle cx="{point.x}" cy="{point.y}" r="5" class="{vertex_class}_point"></circle> / \n'
+            svg_content += f'\t\t\t<circle cx="{point.x}" cy="{point.y}" r="5" class="{vertex_class}_point"/> / \n'
 
         return svg_content
 
@@ -51,7 +49,7 @@ class Ear_Frame(Frame):
 
     def generate_svg(self):
         svg_content = super().generate_svg(self)
-        svg_content += f'<line x1="{self.polygon[self.endpoint1].x}" y1="{self.polygon[self.endpoint1].y}" '
+        svg_content += f'\t\t\t<line x1="{self.polygon[self.endpoint1].x}" y1="{self.polygon[self.endpoint1].y}" '
         svg_content += f'x2="{self.polygon[self.endpoint2].x}" y2="{self.polygon[self.endpoint2].y}" /> / \n'
 
         return svg_content
