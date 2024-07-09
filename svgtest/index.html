@@ -6,6 +6,7 @@
         /* CSS styles for the SVG container */
         #svgelem {
             border: 1px solid #ccc;
+            transform: scale(1); /* Scale the SVG by 2 */
         }
 
         /* Additional CSS styles */
@@ -19,7 +20,7 @@
             stroke-linejoin: round; /* Stroke linejoin */
         }
 
-        .permanent{ 
+        .permanent{
             fill: rgb(178, 178, 198); /* Fill color */
             stroke: #908f8f; /* Stroke color */
             stroke-width: 2; /* Stroke width */
@@ -44,25 +45,35 @@
     </style>
     <script>
         var svgContent = [
-            '<polygon points="100,100 150,25 200,100"/> \
-             <circle cx="100" cy="100" r="3" fill="red" /> \
-             <circle cx="150" cy="25" r="3" fill="red" /> \
-             <circle cx="200" cy="100" r="3" fill="red" />',
-            '<polygon points="10,10 20,25 200,100"/> \
-             <circle cx="10" cy="10" r="3" fill="red" /> \
-             <circle cx="20" cy="25" r="3" fill="red" /> \
-             <circle cx="200" cy="100" r="3" fill="red" />',
-            '<polygon points="10,120 200,20 20,300"/> \
-             <circle cx="10" cy="120" r="3" fill="red" /> \
-             <circle cx="200" cy="20" r="3" fill="red" /> \
-             <circle cx="20" cy="300" r="3" fill="red" />',
+            `<polygon points="20.0,20.0 40.0,20.0 40.0,40.0 80.0,40.0 80.0,80.0 60.0,80.0 60.0,60.0 20.0,60.0"/> /
+            <circle cx="20.0" cy="20.0" r="1.0"/> /
+            <circle cx="40.0" cy="20.0" r="1.0"/> /
+            <circle cx="40.0" cy="40.0" r="1.0"/> /
+            <circle cx="80.0" cy="40.0" r="1.0"/> /
+            <circle cx="80.0" cy="80.0" r="1.0"/> /
+            <circle cx="60.0" cy="80.0" r="1.0"/> /
+            <circle cx="60.0" cy="60.0" r="1.0"/> /
+            <circle cx="20.0" cy="60.0" r="1"/> /
+            <line x1="20.0" y1="60.0" x2="40.0" y2="20.0" />`,
+
+            `<polygon points="20.0,20.0 40.0,20.0 40.0,40.0 80.0,40.0 80.0,80.0 60.0,80.0 60.0,60.0 20.0,60.0"/> /
+            <circle cx="20.0" cy="20.0" r="1.0"/> /
+            <circle cx="40.0" cy="20.0" r="1.0"/> /
+            <circle cx="40.0" cy="40.0" r="1.0"/> /
+            <circle cx="80.0" cy="40.0" r="1.0"/> /
+            <circle cx="80.0" cy="80.0" r="1.0"/> /
+            <circle cx="60.0" cy="80.0" r="1.0"/> /
+            <circle cx="60.0" cy="60.0" r="1.0"/> /
+            <circle cx="20.0" cy="60.0" r="1.0"/> /
+            <line x1="20.0" y1="60.0" x2="40.0" y2="20.0" />`,
         ];
+
 
         var currentIndex = 0;
 
         function displayPolygon(){
             var svg = document.getElementById('svgelem');
-            svg.innerHTML = svgContent[currentIndex];    
+            svg.innerHTML = svgContent[currentIndex];
         }
 
         function nextPolygon() {
