@@ -75,7 +75,7 @@ class Ear_clipping:
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
             next_index = to_be_removed if to_be_removed < new_polygon.get_size()-1 else 0
 
-            self.new_edges.append({previous_index, next_index})
+            self.new_edges.append((current_polygon.get_points()[previous_index].idx, current_polygon.get_points()[next_index].idx))
 
             list_index = [ previous_index, next_index ]
 

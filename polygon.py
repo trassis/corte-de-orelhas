@@ -84,3 +84,6 @@ class Polygon:
             if i != idx:
                 new_points.append(Point(pt.x, pt.y, pt.idx))
         return Polygon('', new_points)
+    
+    def get_points(self):
+        return self.points
