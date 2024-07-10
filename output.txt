@@ -68,7 +68,7 @@
 
     </style>
     <script>
-        var numberFrames = 782;
+        var numberFrames = 7982;
         var currentIndex = 0;
         var intervalId;
         var speed = 200;
@@ -139,7 +139,7 @@
 </head>
 <body>
     <h2>Triangulação de polígonos</h2>
-    <svg id="svgelem" width=500 height=500 xmlns="http://www.w3.org/2000/svg">
+    <svg id="svgelem" width=1000 height=1000 xmlns="http://www.w3.org/2000/svg">
     </svg>
     <br>
     <button onclick="previousPolygon()">Previous Polygon</button>
