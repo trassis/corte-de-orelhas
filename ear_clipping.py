@@ -14,6 +14,7 @@ class Ear_clipping:
         self.height = height
         self.polygon_list = [initial_polygon]
         self.frame_list = []
+        self.new_edges = []
 
         xlim = 0
         ylim = 0
@@ -62,6 +63,9 @@ class Ear_clipping:
 
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
             next_index = to_be_removed if to_be_removed < new_polygon.get_size()-1 else 0
+
+            self.new_edges.append({previous_index, next_index})
+
             list_index = [ previous_index, next_index ]
 
             for idx in list_index:
@@ -83,6 +87,9 @@ class Ear_clipping:
     
     def get_polygons(self):
         return self.polygon_list
+    
+    def get_new_edges(self):
+        return self.new_edges
 
     def get_result(self):
         pass
@@ -95,3 +102,4 @@ class Ear_clipping:
                 file.write(frame.generate_svg())
 
         return html_generator.get(len(self.frame_list), self.width, self.height)
+    
