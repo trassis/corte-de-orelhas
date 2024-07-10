@@ -1,7 +1,7 @@
 from polygon import Polygon
 
 class Frame:
-    def __init__(self, polygon, ear_list, scale=1, widht=300, height=300):
+    def __init__(self, polygon, ear_list, scale, widht, height):
         if not isinstance(polygon, Polygon):
             raise TypeError("Object polygon should be of class Polygon")
 
