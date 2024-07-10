@@ -1,10 +1,12 @@
 
-class triangulated_polygon:
-    def __init__(self, polygon, new_edges, triangle_edges):
-        
+class Triangulated_Polygon:
+    def __init__(self, polygon, new_edges, triangles):
+        self.polygon = polygon
+        self.new_edges = new_edges
+        self.triangles = triangles
 
     def number_of_triangles(self):
-        return self.triangles
+        return self.polygon.get_size() - 2
     
     def number_of_vertices(self):
         return self.polygon.get_size()
@@ -30,3 +32,22 @@ class triangulated_polygon:
 
     def get_points(self):
         return self.polygon.get_points()
+    
+    def get_edges(self):
+        return self.new_edges
+    
+    def is_adj(t1, t2):
+        pontos_comuns = set(t1) & set(t2)
+        return len(pontos_comuns) == 2
+
+    def neighbors(self, idx):
+        neib = []
+
+        for i in range(len(self.triangles)):
+            if i == idx: 
+                continue
+            if self.is_adj(self.triangles[i], self.triangles[idx]):
+                neib.append(i)
+                
+        return neib
+            
