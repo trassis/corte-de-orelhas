@@ -1,16 +1,5 @@
-from frame import Frame, Ear_Frame, FrameOptions
+from frame import Frame, Ear_Frame, FrameOptions, clear_frames
 import html_generator  
-import os
-
-def deletar_arquivos_pasta(pasta):
-    for arquivo in os.listdir(pasta):
-        caminho_arquivo = os.path.join(pasta, arquivo)
-        try:
-            if os.path.isfile(caminho_arquivo):
-                os.unlink(caminho_arquivo)
-       
-        except Exception as e:
-            raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
 
 # Retorna índice da primeira verdade em um lista de Bool
 def search_true(x):
@@ -95,8 +84,11 @@ class Ear_clipping:
     def get_polygons(self):
         return self.polygon_list
 
+    def get_result(self):
+        pass
+
     def generate_html(self):
-        deletar_arquivos_pasta('./frames')
+        clear_frames()
 
         for i, frame in enumerate(self.frame_list):
             with open(f"./frames/frame{i}.svg", "w") as file:

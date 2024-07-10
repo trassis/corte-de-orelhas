@@ -1,4 +1,16 @@
 from polygon import Polygon
+import os
+
+def clear_frames():
+    pasta = './frames'
+    for arquivo in os.listdir(pasta):
+        caminho_arquivo = os.path.join(pasta, arquivo)
+        try:
+            if os.path.isfile(caminho_arquivo):
+                os.unlink(caminho_arquivo)
+
+        except Exception as e:
+            raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
 
 class FrameOptions:
     def __init__(self, scale, widht, height, opacity=1):
