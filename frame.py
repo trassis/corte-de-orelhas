@@ -111,18 +111,32 @@ class Triangle_Frame:
         self.triangle_type[triangle_idx] = "Red"
 
     def generate_svg(self):
-        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
+        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}" opacity="{self.frame_options.opacity}">\n'
 
         points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
         svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
         
+        # Desenha vértices
         for i, point in enumerate(self.tpolygon.get_points()):
             vertex_class = self.vertex_type[i]
             svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="vertex_color{vertex_class}"/>\n'
 
+        # Desenha triângulos destacados (se houver)
         for i in range(self.triangle_number):
             triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
             svg_content += f'<polygon points="{triangle_string}" class="red_triangle"/>\n'
+
+        # Desenha arestas
+        for edge in self.tpolygon.get_edges():
+            endpoint1 = edge[0]
+            endpoint2 = edge[1]
+
+            x1 = self.tpolygon.get_points()[endpoint1].x * self.frame_options.scale
+            y1 = self.tpolygon.get_points()[endpoint1].y * self.frame_options.scale
+            x2 = self.tpolygon.get_points()[endpoint2].x * self.frame_options.scale
+            y2 = self.tpolygon.get_points()[endpoint2].y * self.frame_options.scale
+
+            svg_content = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style"/>'
 
         svg_content += '<svg/>'
 

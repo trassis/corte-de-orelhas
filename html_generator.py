@@ -70,6 +70,11 @@ def get(number_of_frames, height, width):
             stroke: red;
         }
 
+        .edge_style {
+            stroke-widht: 2;
+            stroke: black;
+        }
+
         .vertex_color0 {
             fill: #242e24;
             stroke-widht: 2;

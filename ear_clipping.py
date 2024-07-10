@@ -1,4 +1,5 @@
 from frame import Triangle_Frame, Frame, Ear_Frame, FrameOptions, clear_frames
+from triangulated_polygon import Triangulated_Polygon
 import html_generator  
 
 # Retorna índice da primeira verdade em um lista de Bool
@@ -15,6 +16,7 @@ class Ear_clipping:
         self.polygon_list = [initial_polygon]
         self.frame_list = []
         self.new_edges = []
+        self.triangles = []
 
         xlim = 0
         ylim = 0
@@ -63,9 +65,6 @@ class Ear_clipping:
 
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
             next_index = to_be_removed if to_be_removed < new_polygon.get_size()-1 else 0
-
-            self.new_edges.append((current_polygon.get_points()[previous_index].idx, current_polygon.get_points()[next_index].idx))
-
             list_index = [ previous_index, next_index ]
 
             for idx in list_index:
@@ -81,6 +80,12 @@ class Ear_clipping:
                     response_frame.set_vertex_type(idx, "black")
                 self.frame_list.append(response_frame)
 
+            # Registra novo triângulo na triangulação final
+            idx1 = current_polygon.get_points()[previous_index].idx
+            idx2 = current_polygon.get_points()[to_be_removed].idx
+            idx3 = current_polygon.get_points()[next_index].idx
+            self.new_edges.append([ idx1, idx3 ])
+            self.triangles.append([ idx1, idx2, idx3 ])
 
             current_polygon = new_polygon
             self.polygon_list.append(current_polygon)
@@ -92,8 +97,7 @@ class Ear_clipping:
         return self.new_edges
 
     def get_result(self):
-        # Tem que mudar isso daqui para o polígono triangulado
-        return self.polygon_list[0]
+        return Triangulated_Polygon(self.new_edges, self.triangles)
 
     def generate_html(self):
         clear_frames()
