@@ -1,8 +1,7 @@
 from polygon import Polygon
 
 class Frame:
- 
-    def __init__(self, polygon, ear_list):
+    def __init__(self, polygon, ear_list, scale=1, widht=300, height=300):
         if not isinstance(polygon, Polygon):
             raise TypeError("Object polygon should be of class Polygon")
 
@@ -16,7 +15,9 @@ class Frame:
             if ear_list[i]:
                 self.set_vertex_type(i, "blue")
         
-        self.scale = 20
+        self.scale = scale
+        self.width = widht
+        self.height = height
 
     def set_vertex_type(self, idx, new_type):
         if idx >= len(self.vertex_type):
@@ -25,20 +26,28 @@ class Frame:
 
     def generate_svg(self):
         # Create the polygon element
-        svg_content = []
+        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{self.height}">\n'
         points_string = ' '.join([f'{point.x*self.scale},{point.y*self.scale}' for point in self.polygon.points])
-        svg_content.append(f'<polygon points="{points_string}" class="polygon"/>')
+        svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
         
         # Create circles for each vertex with corresponding classes
         for i, point in enumerate(self.polygon.points):
             vertex_class = self.vertex_type[i]
-            svg_content.append(f'<circle cx="{point.x*self.scale}" cy="{point.y*self.scale}" r="5" class="{vertex_class}_point"/>')
+            svg_content += f'<circle cx="{point.x*self.scale}" cy="{point.y*self.scale}" r="5" class="{vertex_class}_point"/>\n'
+
+        svg_content += '<svg/>'
 
         return svg_content
 
+# Insere uma nova linha antes da última na string original
+def insert_before_last(original, new_line):
+    lines = original.splitlines()
+    lines.insert(-1, new_line)
+    return '\n'.join(lines)
+
 class Ear_Frame(Frame):
-    def __init__(self, polygon, ear_list, idx):
-        super().__init__(polygon, ear_list)
+    def __init__(self, polygon, ear_list, scale, width, height, idx):
+        super().__init__(polygon, ear_list, scale, width, height)
 
         prev_idx = idx-1 if idx>0 else polygon.get_size()-1
         next_idx = idx+1 if idx<polygon.get_size()-1 else 0
@@ -50,13 +59,17 @@ class Ear_Frame(Frame):
         self.set_vertex_type(idx, "red")
         self.set_vertex_type(next_idx, "red")
 
+
     def generate_svg(self):
         svg_content = super().generate_svg()
+
         x1 = self.polygon.points[self.endpoint1].x * self.scale
         y1 = self.polygon.points[self.endpoint1].y * self.scale
         x2 = self.polygon.points[self.endpoint2].x * self.scale
         y2 = self.polygon.points[self.endpoint2].y * self.scale
-        svg_content.append(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="line_style"/>')
+
+        new_line = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="line_style"/>'
+        svg_content = insert_before_last(svg_content, new_line)
 
         return svg_content
 
