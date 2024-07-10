@@ -29,12 +29,9 @@ class Frame:
             raise IndexError("Índice fora da lista")
         self.vertex_type[idx] = new_type
 
-    def generate_svg(self, background = None):
+    def generate_svg(self):
         # Create the polygon element
         svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
-
-        if background != None:
-            svg_content += background.generate_svg()
 
         points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.polygon.points])
         svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
@@ -83,10 +80,41 @@ class Ear_Frame(Frame):
         return svg_content
 
 class Triangle_Frame:
-    def __init__(self, triangulated_polygon, options, idx): 
-        pass
+    def __init__(self, triangulated_polygon, color_list, options): 
+        self.triangle_number = triangulated_polygon.number_of_triangles()
+        self.vertex_number =  triangulated_polygon.number_of_vertices()
+        self.tpolygon = triangulated_polygon
+
+        if self.vertex_number != len(color_list):
+            raise ValueError("Vertex_number and colors should have the same size")
+
+        self.triangle_type = ["Blue"]*self.triangle_number
+        self.vertex_type = []
+        for color in color_list:
+            self.vertex_type.append(color)
+
+        self.frame_options = options
+
+    def highlight_triangle(self, triangle_idx):
+        self.triangle_type[triangle_idx] = "Red"
 
     def generate_svg(self):
-        pass
+        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
+
+        points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
+        svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
+        
+        for i, point in enumerate(self.tpolygon.get_points()):
+            vertex_class = self.vertex_type[i]
+            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="{vertex_class}_point"/>\n'
+
+        for i in range(self.triangle_number):
+            triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
+            svg_content += f'<polygon points="{triangle_string}" class="red_triangle"/>\n'
+
+        svg_content += '<svg/>'
+
+        return svg_content
+
 
 

@@ -5,12 +5,10 @@ def get(number_of_frames, height, width):
 <head>
     <title>Triangulação de polígonos</title>
     <style>
-        /* CSS styles for the SVG container */
         #svgelem {
             border: 1px solid #ccc;
         }
 
-        /* Additional CSS styles */
         .polygon {
             fill: #ada6db; /* Fill color */
             stroke: #2a2a2a; /* Stroke color */
@@ -19,6 +17,11 @@ def get(number_of_frames, height, width):
             fill-opacity: 1; /* Fill opacity */
             stroke-linecap: round; /* Stroke linecap */
             stroke-linejoin: round; /* Stroke linejoin */
+        }
+
+        .red_triangle {
+            fill: #f03e65; /* Fill color */
+            fill-opacity: 1; /* Fill opacity */
         }
 
         .permanent{
@@ -48,7 +51,7 @@ def get(number_of_frames, height, width):
         }
 
         .blue_point {
-            fill: #658db6; /* Point color */
+            fill: #4b46f0
             stroke: none; /* No border */
         }
 
@@ -65,6 +68,27 @@ def get(number_of_frames, height, width):
         .line_style {
             stroke-widht: 2;
             stroke: red;
+        }
+
+        .vertex_color0 {
+            fill: #242e24;
+            stroke-widht: 2;
+            stroke: black; 
+        }
+        .vertex_color1 {
+            fill: #d5d4ff;
+            stroke-widht: 2;
+            stroke: black; 
+        }
+        .vertex_color2 {
+            fill: #68cc68;
+            stroke-widht: 2;
+            stroke: black; 
+        }
+        .vertex_color3 {
+            fill: #4b46f0;
+            stroke-widht: 2;
+            stroke: black; 
         }
 
     </style>
