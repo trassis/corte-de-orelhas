@@ -1,6 +1,8 @@
 from polygon import Polygon
 import os
 
+from triangulated_polygon import Triangulated_Polygon
+
 def clear_frames():
     pasta = './frames'
     for arquivo in os.listdir(pasta):
@@ -11,6 +13,14 @@ def clear_frames():
 
         except Exception as e:
             raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
+
+def remove_first_and_last_lines(text):
+    lines = text.split('\n')
+    if len(lines) >= 2:
+        ans = '\n'.join(lines[1:len(lines)-2])
+        return ans
+    else:
+        raise ValueError("Should have more than 3 lines")
 
 class FrameOptions:
     def __init__(self, scale, widht, height, opacity=1.0):
@@ -41,9 +51,14 @@ class Frame:
             raise IndexError("Índice fora da lista")
         self.vertex_type[idx] = new_type
 
-    def generate_svg(self):
+    def generate_svg(self, background_frame = None):
         # Create the polygon element
         svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
+
+        if background_frame != None:
+            big_svg = background_frame.generate_svg()
+            svg_content += remove_first_and_last_lines(big_svg)
+            svg_content += '\n'
 
         points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.polygon.points])
         svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
@@ -77,9 +92,8 @@ class Ear_Frame(Frame):
         self.set_vertex_type(idx, "red")
         self.set_vertex_type(next_idx, "red")
 
-
-    def generate_svg(self):
-        svg_content = super().generate_svg()
+    def generate_svg(self, background_frame):
+        svg_content = super().generate_svg(background_frame)
 
         x1 = self.polygon.points[self.endpoint1].x * self.frame_options.scale
         y1 = self.polygon.points[self.endpoint1].y * self.frame_options.scale
@@ -93,6 +107,9 @@ class Ear_Frame(Frame):
 
 class Triangle_Frame:
     def __init__(self, triangulated_polygon, color_list, options): 
+        if not isinstance(triangulated_polygon, Triangulated_Polygon):
+            raise TypeError("Erro")
+
         self.triangle_number = triangulated_polygon.number_of_triangles()
         self.vertex_number =  triangulated_polygon.number_of_vertices()
         self.tpolygon = triangulated_polygon
@@ -111,22 +128,24 @@ class Triangle_Frame:
         self.triangle_type[triangle_idx] = "Red"
 
     def generate_svg(self):
-        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}" opacity="{self.frame_options.opacity}">\n'
+        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
 
         points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
-        svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
+        svg_content += f'<polygon points="{points_string}" class="polygon" opacity="{self.frame_options.opacity}"/>\n'
         
         # Desenha vértices
         for i, point in enumerate(self.tpolygon.get_points()):
             vertex_class = self.vertex_type[i]
-            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="vertex_color{vertex_class}"/>\n'
+            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="vertex_color{vertex_class}" opacity="{self.frame_options.opacity}"/>\n'
 
         # Desenha triângulos destacados (se houver)
         for i in range(self.triangle_number):
-            triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
-            svg_content += f'<polygon points="{triangle_string}" class="red_triangle"/>\n'
+            if self.triangle_type[i] == "Red":
+                triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
+                svg_content += f'<polygon points="{triangle_string}" class="red_triangle" opacity="{self.frame_options.opacity}"/>\n'
 
         # Desenha arestas
+        print(len(self.tpolygon.get_edges()))
         for edge in self.tpolygon.get_edges():
             endpoint1 = edge[0]
             endpoint2 = edge[1]
@@ -136,7 +155,7 @@ class Triangle_Frame:
             x2 = self.tpolygon.get_points()[endpoint2].x * self.frame_options.scale
             y2 = self.tpolygon.get_points()[endpoint2].y * self.frame_options.scale
 
-            svg_content = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style"/>'
+            svg_content += f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style" opacity="{self.frame_options.opacity}"/>\n'
 
         svg_content += '<svg/>'
 

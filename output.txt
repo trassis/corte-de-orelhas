@@ -65,34 +65,39 @@
         }
 
         .line_style {
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: red;
+        }
+
+        .edge_style {
+            stroke-width: 2;
+            stroke: black;
         }
 
         .vertex_color0 {
             fill: #242e24;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color1 {
             fill: #d5d4ff;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color2 {
             fill: #68cc68;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color3 {
             fill: #4b46f0;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
 
     </style>
     <script>
-        var numberFrames = 782;
+        var numberFrames = 46;
         var currentIndex = 0;
         var intervalId;
         var speed = 200;
@@ -163,7 +168,7 @@
 </head>
 <body>
     <h2>Triangulação de polígonos</h2>
-    <svg id="svgelem" width=600 height=600 xmlns="http://www.w3.org/2000/svg">
+    <svg id="svgelem" width=500 height=500 xmlns="http://www.w3.org/2000/svg">
     </svg>
     <br>
     <button onclick="previousPolygon()">Previous Polygon</button>

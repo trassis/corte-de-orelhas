@@ -36,7 +36,7 @@ class Triangulated_Polygon:
     def get_edges(self):
         return self.new_edges
     
-    def is_adj(t1, t2):
+    def is_adj(self, t1, t2):
         pontos_comuns = set(t1) & set(t2)
         return len(pontos_comuns) == 2
 

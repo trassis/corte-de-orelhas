@@ -66,33 +66,33 @@ def get(number_of_frames, height, width):
         }
 
         .line_style {
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: red;
         }
 
         .edge_style {
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black;
         }
 
         .vertex_color0 {
             fill: #242e24;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color1 {
             fill: #d5d4ff;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color2 {
             fill: #68cc68;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
         .vertex_color3 {
             fill: #4b46f0;
-            stroke-widht: 2;
+            stroke-width: 2;
             stroke: black; 
         }
 

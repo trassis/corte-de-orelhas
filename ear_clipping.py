@@ -51,6 +51,13 @@ class Ear_clipping:
         while current_polygon.get_size() > 3:
             to_be_removed = search_true(ear_list)
 
+            # Registra novo triângulo na triangulação final
+            idx1 = current_polygon.get_points()[to_be_removed-1 if to_be_removed>0 else 0].idx
+            idx2 = current_polygon.get_points()[to_be_removed].idx
+            idx3 = current_polygon.get_points()[to_be_removed+1 if to_be_removed<current_polygon.get_size()-1 else current_polygon.get_size()-1].idx
+            self.new_edges.append([ idx1, idx3 ])
+            self.triangles.append([ idx1, idx2, idx3 ])
+
             # Marca que vértice será removido
             removed_frame = Frame(current_polygon, ear_list, FrameOptions(self.scale, self.width, self.height))
             removed_frame.set_vertex_type(to_be_removed, "red")
@@ -65,6 +72,7 @@ class Ear_clipping:
 
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
             next_index = to_be_removed if to_be_removed < new_polygon.get_size()-1 else 0
+
             list_index = [ previous_index, next_index ]
 
             for idx in list_index:
@@ -80,15 +88,11 @@ class Ear_clipping:
                     response_frame.set_vertex_type(idx, "black")
                 self.frame_list.append(response_frame)
 
-            # Registra novo triângulo na triangulação final
-            idx1 = current_polygon.get_points()[previous_index].idx
-            idx2 = current_polygon.get_points()[to_be_removed].idx
-            idx3 = current_polygon.get_points()[next_index].idx
-            self.new_edges.append([ idx1, idx3 ])
-            self.triangles.append([ idx1, idx2, idx3 ])
-
             current_polygon = new_polygon
             self.polygon_list.append(current_polygon)
+
+        # Frame vazio para fim
+        # self.frame_list.append(EmptyFrame())
     
     def get_polygons(self):
         return self.polygon_list
@@ -97,13 +101,13 @@ class Ear_clipping:
         return self.new_edges
 
     def get_result(self):
-        return Triangulated_Polygon(self.new_edges, self.triangles)
+        return Triangulated_Polygon(self.polygon_list[0], self.new_edges, self.triangles)
 
     def generate_html(self):
         clear_frames()
 
         zero_list = [ 0 ]* self.polygon_list[0].get_size()
-        background_frame = Triangle_Frame(self.get_result, zero_list, FrameOptions(self.scale, self.width, self.height, 0.2))
+        background_frame = Triangle_Frame(self.get_result(), zero_list, FrameOptions(self.scale, self.width, self.height, 0.2))
 
         for i, frame in enumerate(self.frame_list):
             with open(f"./frames/frame{i}.svg", "w") as file:
