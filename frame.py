@@ -68,7 +68,7 @@ class Frame:
             vertex_class = self.vertex_type[i]
             svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="{vertex_class}_point"/>\n'
 
-        svg_content += '<svg/>'
+        svg_content += '</svg>'
 
         return svg_content
 
@@ -157,7 +157,7 @@ class Triangle_Frame:
 
             svg_content += f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style" opacity="{self.frame_options.opacity}"/>\n'
 
-        svg_content += '<svg/>'
+        svg_content += '</svg>'
 
         return svg_content
 

@@ -97,7 +97,7 @@
 
     </style>
     <script>
-        var numberFrames = 46;
+        var numberFrames = 782;
         var currentIndex = 0;
         var intervalId;
         var speed = 200;
