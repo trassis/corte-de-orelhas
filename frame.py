@@ -29,9 +29,13 @@ class Frame:
             raise IndexError("Índice fora da lista")
         self.vertex_type[idx] = new_type
 
-    def generate_svg(self):
+    def generate_svg(self, background = None):
         # Create the polygon element
         svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
+
+        if background != None:
+            svg_content += background.generate_svg()
+
         points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.polygon.points])
         svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
         
@@ -78,7 +82,10 @@ class Ear_Frame(Frame):
 
         return svg_content
 
-class Triangle_Frame(Frame):
+class Triangle_Frame:
+    def __init__(self, triangulated_polygon, options, idx): 
+        pass
+
     def generate_svg(self):
         pass
 

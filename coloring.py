@@ -11,6 +11,8 @@ class Coloring:
     def solve(self):
         vis = [False]*self.n
 
+        self.frames.append()
+
         q = Queue()
         q.put(0)
         vis[0] = True

@@ -18,9 +18,9 @@ class Polygon:
         self.points = []
         with open(file_name, 'r') as file:
             self.size = int(file.readline().strip())
-            for _ in range(self.size):
+            for i in range(self.size):
                 x, y = map(int, file.readline().strip().split())
-                self.points.append(Point(x,y))
+                self.points.append(Point(x,y,i))
 
     def read_from_pol(self, file_path):
         self.points = []
@@ -46,7 +46,7 @@ class Polygon:
                 r, s = map(int, coordinates[2 * i + 1].split('/'))
                 x = p / q
                 y = r / s
-                self.points.append(Point(x, y))
+                self.points.append(Point(x, y, i))
 
 
     def get_size(self):
@@ -82,5 +82,5 @@ class Polygon:
         new_points = []
         for i, pt in enumerate(self.points):
             if i != idx:
-                new_points.append(Point(pt.x, pt.y))
+                new_points.append(Point(pt.x, pt.y, pt.idx))
         return Polygon('', new_points)
