@@ -1,4 +1,4 @@
-from frame import Frame, Ear_Frame
+from frame import Frame, Ear_Frame, FrameOptions
 import html_generator  
 
 # Retorna índice da primeira verdade em um lista de Bool
@@ -31,10 +31,10 @@ class Ear_clipping:
 
         # Para cada verificação, adiciona 2 frames
         for i in range(current_polygon.get_size()):
-            verify_frame = Ear_Frame(current_polygon, ear_list, self.scale, self.width, self.height, i)
+            verify_frame = Ear_Frame(current_polygon, ear_list, FrameOptions(self.scale, self.width, self.height), i)
             self.frame_list.append(verify_frame)
 
-            response_frame = Ear_Frame(current_polygon, ear_list, self.scale, self.width, self.height, i)
+            response_frame = Ear_Frame(current_polygon, ear_list, FrameOptions(self.scale, self.width, self.height), i)
 
             if current_polygon.is_ear(i):
                 ear_list[i] = True
@@ -49,7 +49,7 @@ class Ear_clipping:
             to_be_removed = search_true(ear_list)
 
             # Marca que vértice será removido
-            removed_frame = Frame(current_polygon, ear_list, self.scale, self.width, self.height)
+            removed_frame = Frame(current_polygon, ear_list, FrameOptions(self.scale, self.width, self.height))
             removed_frame.set_vertex_type(to_be_removed, "red")
             self.frame_list.append(removed_frame)
 
@@ -57,7 +57,7 @@ class Ear_clipping:
             new_polygon = current_polygon.removed_vertex(to_be_removed)
 
             # Vértice foi removido
-            new_polygon_frame = Frame(new_polygon, ear_list, self.scale, self.width, self.height)
+            new_polygon_frame = Frame(new_polygon, ear_list, FrameOptions(self.scale, self.width, self.height))
             self.frame_list.append(new_polygon_frame)
 
             previous_index = to_be_removed-1 if to_be_removed > 0 else new_polygon.get_size()-1
@@ -65,12 +65,12 @@ class Ear_clipping:
             list_index = [ previous_index, next_index ]
 
             for idx in list_index:
-                verify_frame = Ear_Frame(new_polygon, ear_list, self.scale, self.width, self.height, idx)
+                verify_frame = Ear_Frame(new_polygon, ear_list, FrameOptions(self.scale, self.width, self.height), idx)
                 self.frame_list.append(verify_frame)
 
                 ear_list[idx] = new_polygon.is_ear(idx)
 
-                response_frame = Ear_Frame(new_polygon, ear_list, self.scale, self.width, self.height, idx)
+                response_frame = Ear_Frame(new_polygon, ear_list, FrameOptions(self.scale, self.width, self.height), idx)
                 if ear_list[idx]:
                     response_frame.set_vertex_type(idx, "red")
                 else:
