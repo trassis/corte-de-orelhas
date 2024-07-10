@@ -1,23 +1,28 @@
 from polygon import Polygon
 
+class FrameOptions:
+    def __init__(self, scale, widht, height, opacity=1):
+        self.scale = scale
+        self.width = widht
+        self.height = height
+        self.opacity = opacity
+
 class Frame:
-    def __init__(self, polygon, ear_list, scale=1, widht=300, height=300):
+    def __init__(self, polygon, ear_list, options):
         if not isinstance(polygon, Polygon):
             raise TypeError("Object polygon should be of class Polygon")
-
+        if not isinstance(options, FrameOptions):
+            raise TypeError("Object options should be of class FrameOptions")
         if polygon.get_size() != len(ear_list):
             raise ValueError("Polygon and list should be of the same size")
 
+        self.frame_options = options
         self.polygon = polygon
         self.vertex_type = ["black"]*polygon.get_size()
         # Marca orelhas antigas de azul
         for i in range(len(ear_list)):
             if ear_list[i]:
                 self.set_vertex_type(i, "blue")
-        
-        self.scale = scale
-        self.width = widht
-        self.height = height
 
     def set_vertex_type(self, idx, new_type):
         if idx >= len(self.vertex_type):
@@ -26,14 +31,14 @@ class Frame:
 
     def generate_svg(self):
         # Create the polygon element
-        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.width}" height="{self.height}">\n'
-        points_string = ' '.join([f'{point.x*self.scale},{point.y*self.scale}' for point in self.polygon.points])
+        svg_content = f'<svg xmlns="http://www.w3.org/2000/svg" width="{self.frame_options.width}" height="{self.frame_options.height}">\n'
+        points_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.polygon.points])
         svg_content += f'<polygon points="{points_string}" class="polygon"/>\n'
         
         # Create circles for each vertex with corresponding classes
         for i, point in enumerate(self.polygon.points):
             vertex_class = self.vertex_type[i]
-            svg_content += f'<circle cx="{point.x*self.scale}" cy="{point.y*self.scale}" r="5" class="{vertex_class}_point"/>\n'
+            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="{vertex_class}_point"/>\n'
 
         svg_content += '<svg/>'
 
@@ -46,8 +51,8 @@ def insert_before_last(original, new_line):
     return '\n'.join(lines)
 
 class Ear_Frame(Frame):
-    def __init__(self, polygon, ear_list, scale, width, height, idx):
-        super().__init__(polygon, ear_list, scale, width, height)
+    def __init__(self, polygon, ear_list, options, idx):
+        super().__init__(polygon, ear_list, options)
 
         prev_idx = idx-1 if idx>0 else polygon.get_size()-1
         next_idx = idx+1 if idx<polygon.get_size()-1 else 0
@@ -63,17 +68,17 @@ class Ear_Frame(Frame):
     def generate_svg(self):
         svg_content = super().generate_svg()
 
-        x1 = self.polygon.points[self.endpoint1].x * self.scale
-        y1 = self.polygon.points[self.endpoint1].y * self.scale
-        x2 = self.polygon.points[self.endpoint2].x * self.scale
-        y2 = self.polygon.points[self.endpoint2].y * self.scale
+        x1 = self.polygon.points[self.endpoint1].x * self.frame_options.scale
+        y1 = self.polygon.points[self.endpoint1].y * self.frame_options.scale
+        x2 = self.polygon.points[self.endpoint2].x * self.frame_options.scale
+        y2 = self.polygon.points[self.endpoint2].y * self.frame_options.scale
 
         new_line = f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="line_style"/>'
         svg_content = insert_before_last(svg_content, new_line)
 
         return svg_content
 
-class Neighbor_Frame(Frame):
+class Triangle_Frame(Frame):
     def generate_svg(self):
         pass
 
