@@ -1,4 +1,4 @@
-from frame import Frame, Ear_Frame, FrameOptions, clear_frames
+from frame import Triangle_Frame, Frame, Ear_Frame, FrameOptions, clear_frames
 import html_generator  
 
 # Retorna índice da primeira verdade em um lista de Bool
@@ -92,14 +92,18 @@ class Ear_clipping:
         return self.new_edges
 
     def get_result(self):
-        pass
+        # Tem que mudar isso daqui para o polígono triangulado
+        return self.polygon_list[0]
 
     def generate_html(self):
         clear_frames()
 
+        zero_list = [ 0 ]* self.polygon_list[0].get_size()
+        background_frame = Triangle_Frame(self.get_result, zero_list, FrameOptions(self.scale, self.width, self.height, 0.2))
+
         for i, frame in enumerate(self.frame_list):
             with open(f"./frames/frame{i}.svg", "w") as file:
-                file.write(frame.generate_svg())
+                file.write(frame.generate_svg(background_frame))
 
         return html_generator.get(len(self.frame_list), self.width, self.height)
     

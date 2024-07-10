@@ -13,7 +13,7 @@ def clear_frames():
             raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
 
 class FrameOptions:
-    def __init__(self, scale, widht, height, opacity=1):
+    def __init__(self, scale, widht, height, opacity=1.0):
         self.scale = scale
         self.width = widht
         self.height = height
@@ -118,7 +118,7 @@ class Triangle_Frame:
         
         for i, point in enumerate(self.tpolygon.get_points()):
             vertex_class = self.vertex_type[i]
-            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="{vertex_class}_point"/>\n'
+            svg_content += f'<circle cx="{point.x*self.frame_options.scale}" cy="{point.y*self.frame_options.scale}" r="5" class="vertex_color{vertex_class}"/>\n'
 
         for i in range(self.triangle_number):
             triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
