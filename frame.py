@@ -1,6 +1,5 @@
 import os
-from frameOptions import FrameOptions
-import tpolygon
+import frameOptions
 
 def clear_frames():
     pasta = './frames'
@@ -21,25 +20,42 @@ def remove_first_and_last_lines(text):
     else:
         raise ValueError("Should have more than 3 lines")
 
+# Retorna o valor do scale para os pontos preencherem width x height
+def set_scale(width, height, list_of_points):
+    xlim = max([ point.x for point in list_of_points ])
+    ylim = max([ point.y for point in list_of_points ])
+
+    xlim *= 1.1
+    ylim *= 1.1
+
+    return min(width/xlim, height/ylim)
+
+# Implementa um frame para um conjunto de pontos
 class Frame:
-    def __init__(self, polygon, ear_list, options):
-        if not isinstance(options, FrameOptions):
-            raise TypeError("Object options should be of class FrameOptions")
-        if polygon.get_size() != len(ear_list):
+    def __init__(self, points):
+        self.points = points
+        self.points_colors = ["Black"] * len(points)
+
+        self.frame_options = frameOptions.FrameOptions(scale=1, width=400, height=400)
+
+    # Colore um ponto
+    def set_vertex_type(self, idx, new_color):
+        if idx >= len(self.points_colors):
+            raise IndexError("Índice fora da lista")
+        self.points_colors[idx] = new_color
+
+class EFrame(Frame):
+    def __init__(self, points, ear_list):
+        if points.get_size() != len(ear_list):
             raise ValueError("Polygon and list should be of the same size")
 
-        self.frame_options = options
-        self.polygon = polygon
-        self.vertex_type = ["black"]*polygon.get_size()
+        super().__init__(points)
+
         # Marca orelhas antigas de azul
         for i in range(len(ear_list)):
             if ear_list[i]:
                 self.set_vertex_type(i, "blue")
 
-    def set_vertex_type(self, idx, new_type):
-        if idx >= len(self.vertex_type):
-            raise IndexError("Índice fora da lista")
-        self.vertex_type[idx] = new_type
 
     def generate_svg(self, background_frame = None):
         # Create the polygon element
@@ -69,8 +85,8 @@ def insert_before_last(original, new_line):
     return '\n'.join(lines)
 
 class Ear_Frame(Frame):
-    def __init__(self, polygon, ear_list, options, idx):
-        super().__init__(polygon, ear_list, options)
+    def __init__(self, polygon, ear_list, idx):
+        super().__init__(polygon, ear_list)
 
         prev_idx = idx-1 if idx>0 else polygon.get_size()-1
         next_idx = idx+1 if idx<polygon.get_size()-1 else 0
@@ -95,13 +111,15 @@ class Ear_Frame(Frame):
 
         return svg_content
 
-class Triangle_Frame:
-    def __init__(self, triangulated_polygon, color_list, options): 
+class Triangle_Frame(Frame):
+    def __init__(self, triangulated_polygon, color_list): 
+        """
         if not isinstance(triangulated_polygon, tpolygon.TPolygon):
             raise TypeError("Erro")
+        """
 
         self.triangle_number = triangulated_polygon.number_of_triangles()
-        self.vertex_number =  triangulated_polygon.number_of_vertices()
+        self.vertex_number =  triangulated_polygon.get_size()
         self.tpolygon = triangulated_polygon
 
         if self.vertex_number != len(color_list):
@@ -111,8 +129,6 @@ class Triangle_Frame:
         self.vertex_type = []
         for color in color_list:
             self.vertex_type.append(color)
-
-        self.frame_options = options
 
     def highlight_triangle(self, triangle_idx):
         self.triangle_type[triangle_idx] = "Red"
@@ -134,8 +150,6 @@ class Triangle_Frame:
                 triangle_string = ' '.join([f'{point.x*self.frame_options.scale},{point.y*self.frame_options.scale}' for point in self.tpolygon.get_points()])
                 svg_content += f'<polygon points="{triangle_string}" class="red_triangle" opacity="{self.frame_options.opacity}"/>\n'
 
-        # Desenha arestas
-        print(len(self.tpolygon.get_edges()))
         for edge in self.tpolygon.get_edges():
             endpoint1 = edge[0]
             endpoint2 = edge[1]

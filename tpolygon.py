@@ -1,19 +1,24 @@
-class TPolygon:
-    def __init__(self, polygon, new_edges, triangles):
-        self.polygon = polygon
-        self.new_edges = new_edges
+import polygon
+import frame
+import frameOptions
+
+class TPolygon(polygon.Polygon):
+    def __init__(self, points, edges, triangles):
+        super().__init__(points = points)
+
+        self.edges = edges
         self.triangles = triangles
 
+        colors = ["Black"]*len(points)
+        self.frame = frame.Triangle_Frame(self, colors)
+
     def number_of_triangles(self):
-        return self.polygon.get_size() - 2
-    
-    def number_of_vertices(self):
-        return self.polygon.get_size()
+        return len(self.triangles)
 
     def vertices_of_triangle(self, idx):
         return self.triangles[idx]
 
-    # quem ta em v mas não esta u
+    # quem ta em no triangulo v mas não esta no triangulo u
     def subtract_neighbors(self, v, u):
         ret = []
         for i in self.vertices_of_triangle(v):
@@ -29,11 +34,8 @@ class TPolygon:
 
         return ret[0]
 
-    def get_points(self):
-        return self.polygon.get_points()
-    
     def get_edges(self):
-        return self.new_edges
+        return self.edges
     
     def is_adj(self, t1, t2):
         pontos_comuns = set(t1) & set(t2)
@@ -49,17 +51,3 @@ class TPolygon:
                 neib.append(i)
                 
         return neib
-            
-    def generate_html(self):
-        # Sem background por enquanto
-        """
-        frame.clear_frames()
-
-        zero_list = [ 0 ]* self.polygon_list[0].get_size()
-        background_frame = frame.Triangle_Frame(self.get_result(), zero_list, self.frame_options, 0.2)
-        """
-
-        with open(f"./frames/frame{i}.svg", "w") as file:
-            file.write(frame.generate_svg(None))
-
-        return html_generator.get(len(self.frame_list), self.frame_options.width, self.frame_options.height)

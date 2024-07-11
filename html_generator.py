@@ -1,6 +1,7 @@
 import ear_clipping
 import tpolygon
 
+# HTML para a animação
 def _ear_clipping_html(obj):
     # Sem background por enquanto
     """
@@ -17,14 +18,25 @@ def _ear_clipping_html(obj):
 
     return _get(len(obj.frame_list), obj.frame_options.width, obj.frame_options.height)
 
+# HTML para só um tpolygon
 def _tpolygon_html(obj):
-    pass
+    frame = obj.get_frame()
+
+    with open(f"./frames/frame0.svg", "w") as file:
+        file.write(frame.generate_svg())
+
+    print('oi')
+
+    # MUDAR AQUI
+    return _get(1, 400, 400)
 
 def generate_html(to_be_printed):
     if isinstance(to_be_printed, ear_clipping.Ear_clipping):
         return _ear_clipping_html(to_be_printed);
+
     if isinstance(to_be_printed, tpolygon.TPolygon):
-        return _ear_clipping_html(to_be_printed);
+        return _tpolygon_html(to_be_printed);
+
     else:
         raise ValueError("Not implemented yet")
 
