@@ -1,6 +1,6 @@
-from triangulated_polygon import Triangulated_Polygon
 import frameOptions
 import html_generator  
+import tpolygon
 
 # Retorna índice da primeira verdade em um lista de Bool
 def search_true(x):
@@ -19,6 +19,14 @@ def set_scale(width, height, list_of_points):
 
     return min(width/xlim, height/ylim)
 
+# Retorna arestas nesse triangulo que não estavam no orgianal
+def remaining_edges(triangle):
+    edges = []
+    for i in range(2):
+        if(triangle[i].idx+1 != triangle[i+1].idx):
+            edges.append([ triangle[i].idx, triangle[i+1].idx ])
+    return edges
+
 class Ear_clipping:
     def __init__(self, initial_polygon, width, height):
         scale = set_scale(width, height, initial_polygon.points)
@@ -27,6 +35,7 @@ class Ear_clipping:
         self.polygon_list = [ initial_polygon ]
         self.frame_list = []
 
+    # Retorna o polígono triangulado e os frames da animação
     def triangulation(self):
         edges = [] # Arestas da triangulação
         triangles = [] # Triangulos da triangulação
@@ -47,32 +56,14 @@ class Ear_clipping:
 
             self.frame_list += removal_frames
 
-        self.edges = edges
-        self.triangles = triangles
+        # Adiciona ultimas arestas e triangulos
+        edges += remaining_edges(current_polygon.points)
+        triangles.append([ point.idx for point in current_polygon.points ])
 
         # Frame vazio para fim
         # self.frame_list.append(EmptyFrame())
+
+        return tpolygon.TPolygon(self.polygon_list[0], edges, triangles)
     
     def get_polygons(self):
         return self.polygon_list
-    
-    def get_new_edges(self):
-        return self.edges
-
-    def get_result(self):
-        return Triangulated_Polygon(self.polygon_list[0], self.edges, self.triangles)
-
-    def generate_html(self):
-        # Sem background por enquanto
-        """
-        frame.clear_frames()
-
-        zero_list = [ 0 ]* self.polygon_list[0].get_size()
-        background_frame = frame.Triangle_Frame(self.get_result(), zero_list, self.frame_options, 0.2)
-
-        for i, frame in enumerate(self.frame_list):
-            with open(f"./frames/frame{i}.svg", "w") as file:
-                file.write(frame.generate_svg(background_frame))
-        """
-
-        return html_generator.get(len(self.frame_list), self.frame_options.width, self.frame_options.height)

@@ -1,5 +1,4 @@
-
-class Triangulated_Polygon:
+class TPolygon:
     def __init__(self, polygon, new_edges, triangles):
         self.polygon = polygon
         self.new_edges = new_edges
@@ -51,3 +50,16 @@ class Triangulated_Polygon:
                 
         return neib
             
+    def generate_html(self):
+        # Sem background por enquanto
+        """
+        frame.clear_frames()
+
+        zero_list = [ 0 ]* self.polygon_list[0].get_size()
+        background_frame = frame.Triangle_Frame(self.get_result(), zero_list, self.frame_options, 0.2)
+        """
+
+        with open(f"./frames/frame{i}.svg", "w") as file:
+            file.write(frame.generate_svg(None))
+
+        return html_generator.get(len(self.frame_list), self.frame_options.width, self.frame_options.height)

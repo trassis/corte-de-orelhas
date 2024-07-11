@@ -1,4 +1,34 @@
-def get(number_of_frames, height, width):
+import ear_clipping
+import tpolygon
+
+def _ear_clipping_html(obj):
+    # Sem background por enquanto
+    """
+    frame.clear_frames()
+
+    zero_list = [ 0 ]* self.polygon_list[0].get_size()
+    background_frame = frame.Triangle_Frame(self.get_result(), zero_list, self.frame_options, 0.2)
+    """
+
+    for i, frame in enumerate(obj.frame_list):
+        with open(f"./frames/frame{i}.svg", "w") as file:
+            # file.write(frame.generate_svg(background_frame))
+            file.write(frame.generate_svg(None))
+
+    return _get(len(obj.frame_list), obj.frame_options.width, obj.frame_options.height)
+
+def _tpolygon_html(obj):
+    pass
+
+def generate_html(to_be_printed):
+    if isinstance(to_be_printed, ear_clipping.Ear_clipping):
+        return _ear_clipping_html(to_be_printed);
+    if isinstance(to_be_printed, tpolygon.TPolygon):
+        return _ear_clipping_html(to_be_printed);
+    else:
+        raise ValueError("Not implemented yet")
+
+def _get(number_of_frames, height, width):
     return """
 <!DOCTYPE html>
 <html>

@@ -1,6 +1,6 @@
 import os
 from frameOptions import FrameOptions
-from triangulated_polygon import Triangulated_Polygon
+import tpolygon
 
 def clear_frames():
     pasta = './frames'
@@ -97,7 +97,7 @@ class Ear_Frame(Frame):
 
 class Triangle_Frame:
     def __init__(self, triangulated_polygon, color_list, options): 
-        if not isinstance(triangulated_polygon, Triangulated_Polygon):
+        if not isinstance(triangulated_polygon, tpolygon.TPolygon):
             raise TypeError("Erro")
 
         self.triangle_number = triangulated_polygon.number_of_triangles()
@@ -150,6 +150,3 @@ class Triangle_Frame:
         svg_content += '</svg>'
 
         return svg_content
-
-
-
