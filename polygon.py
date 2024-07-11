@@ -1,8 +1,8 @@
+import frame
 from geometry import angle, in_triangle, Point
 
-
 class Polygon:
-    def __init__(self, file_name='', points=None):
+    def __init__(self, file_name='', points=None, ear_list=[]):
         if points is None:
             self.size = 0
             self.points = []
@@ -10,8 +10,18 @@ class Polygon:
             self.size = len(points)
             self.points = points
 
+        # MUDAR CONSTRUTOR para aqui também funcionar com .pol
         if file_name != '':
             self.read_from_file(file_name)
+
+        if len(ear_list) == 0:
+            self.ear_list = [False]*self.size
+        else:
+            self.ear_list = ear_list.copy()
+
+        if len(self.points) != len(self.ear_list):
+            raise ValueError(len(self.points), len(self.ear_list))
+
 
     # Obtem um poligono representado em um arquivo
     def read_from_file(self, file_name):
@@ -48,6 +58,8 @@ class Polygon:
                 y = r / s
                 self.points.append(Point(x, y, i))
 
+        self.ear_list = [False]*self.size
+
 
     def get_size(self):
         return self.size
@@ -73,6 +85,73 @@ class Polygon:
                 return False
 
         return True
+
+    # Itera sobre todos os vértices para descobrir se são orelhas
+    def ear_verification_frames(self, frame_options):
+        if len(self.points) != len(self.ear_list):
+            raise ValueError(len(self.points), len(self.ear_list))
+
+        frames = []
+        for i in range(self.size):
+            verify_frame = frame.Ear_Frame(self, self.ear_list, frame_options, i)
+            frames.append(verify_frame)
+
+            response_frame = frame.Ear_Frame(self, self.ear_list, frame_options, i)
+
+            if self.is_ear(i):
+                self.ear_list[i] = True
+                response_frame.set_vertex_type(i, "green")
+            else:
+                response_frame.set_vertex_type(i, "black")
+
+            frames.append(response_frame)
+
+        return frames
+
+    # Retorna um novo polígono a partir da remoção de uma orelha do atual
+    # Retorna a nova aresta
+    # Retorna o novo triangulo
+    # Retorna os frames gerados no processo
+    # O novo polígono possui lista de orelhas já pronta
+    def remove_ear(self, frame_options):
+        ear_index = self.ear_list.index(True)
+        new_frames = []
+
+        # Novo polígono
+        new_ear_list = self.ear_list.copy()
+        new_ear_list.pop(ear_index)
+        new_points = []
+        for pt in self.points:
+            new_points.append(Point(pt.x, pt.y, pt.idx))
+        new_points.pop(ear_index)
+        new_polygon = Polygon(points=new_points, ear_list=new_ear_list)
+
+        # Atualiza as orelhas do novo polígono
+        previous_index = (ear_index-1) % new_polygon.get_size()
+        next_index = ear_index % new_polygon.get_size()
+        for index in [ previous_index, next_index ]:
+            verify_frame = frame.Ear_Frame(new_polygon, new_polygon.ear_list, frame_options, index)
+            new_frames.append(verify_frame)
+
+            new_polygon.ear_list[index] = new_polygon.is_ear(index)
+
+            response_frame = frame.Ear_Frame(new_polygon, new_polygon.ear_list, frame_options, index)
+            if new_polygon.ear_list[index]:
+                response_frame.set_vertex_type(index, "red")
+            else:
+                response_frame.set_vertex_type(index, "black")
+
+            new_frames.append(response_frame)
+
+        # Nova aresta e novo triangulo
+        index1 = self.points[(ear_index-1) % self.get_size()].idx
+        index2 = self.points[(ear_index) % self.get_size()].idx
+        index3 = self.points[(ear_index+1) % self.get_size()].idx
+
+        new_edge = [index1, index3]
+        new_triangle = [index1, index2, index3]
+
+        return [ new_polygon, new_edge, new_triangle, new_frames ]
 
     def add_vertex(self, Point):
         self.size += 1

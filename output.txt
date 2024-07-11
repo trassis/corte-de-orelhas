@@ -97,7 +97,7 @@
 
     </style>
     <script>
-        var numberFrames = 782;
+        var numberFrames = 36;
         var currentIndex = 0;
         var intervalId;
         var speed = 200;
@@ -114,6 +114,7 @@
             fetchSVGContent(filename, function(svgContent) {
                 var svg = document.getElementById('svgelem');
                 svg.innerHTML = svgContent;
+                console.log(svg.innerHTML);
             });
         }
 

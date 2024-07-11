@@ -1,6 +1,5 @@
-from polygon import Polygon
 import os
-
+from frameOptions import FrameOptions
 from triangulated_polygon import Triangulated_Polygon
 
 def clear_frames():
@@ -22,17 +21,8 @@ def remove_first_and_last_lines(text):
     else:
         raise ValueError("Should have more than 3 lines")
 
-class FrameOptions:
-    def __init__(self, scale, widht, height, opacity=1.0):
-        self.scale = scale
-        self.width = widht
-        self.height = height
-        self.opacity = opacity
-
 class Frame:
     def __init__(self, polygon, ear_list, options):
-        if not isinstance(polygon, Polygon):
-            raise TypeError("Object polygon should be of class Polygon")
         if not isinstance(options, FrameOptions):
             raise TypeError("Object options should be of class FrameOptions")
         if polygon.get_size() != len(ear_list):

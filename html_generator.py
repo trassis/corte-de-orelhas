@@ -115,6 +115,7 @@ def get(number_of_frames, height, width):
             fetchSVGContent(filename, function(svgContent) {
                 var svg = document.getElementById('svgelem');
                 svg.innerHTML = svgContent;
+                console.log(svg.innerHTML);
             });
         }
 
