@@ -1,7 +1,7 @@
 import ear_clipping
 import tpolygon
 import os
-import frameOptions
+from frameOptions import FrameOptions
 
 def clear_frames():
     pasta = './frames'
@@ -20,7 +20,7 @@ def _ear_clipping_html(obj):
         with open(f"./frames/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), frameOptions.global_width(), frameOptions.global_height())
+    return _get(len(obj.frame_list), FrameOptions.width, FrameOptions.height)
 
 # HTML para só um tpolygon
 def _tpolygon_html(obj):
@@ -130,7 +130,7 @@ def _get(number_of_frames, height, width):
     var numberFrames = """ + str(number_of_frames) + """;
     var currentIndex = 0;
     var intervalId;
-    var speed = 200;
+    var speed = 100;
 
     function fetchSVGContent(file, callback) {
         fetch(file)
@@ -149,8 +149,13 @@ def _get(number_of_frames, height, width):
     }
 
     function nextPolygon() {
-        currentIndex = (currentIndex + 1) % numberFrames; // Move to the next polygon circularly
-        displayPolygon(); // Display the new polygon
+        if(intervalId && currentIndex == numberFrames-1){
+            stopAutoPlay();
+        }
+        else{
+            currentIndex = (currentIndex + 1) % numberFrames; // Move to the next polygon circularly
+            displayPolygon(); // Display the new polygon
+        }
     }
 
     function previousPolygon() {
@@ -210,8 +215,8 @@ def _get(number_of_frames, height, width):
 <button onclick="stopAutoPlay()">Stop AutoPlay</button>
 <br>
 <label for="speedRange">Autoplay Frequency (ms): </label>
-<input type="range" id="speedRange" min="5" max="1005" value="200" step="50" oninput="changeSpeed(this.value)">
-<span id="speedValue">200</span> ms
+<input type="range" id="speedRange" min="50" max="1010" value="100" step="50" oninput="changeSpeed(this.value)">
+<span id="speedValue">100</span> ms
 <br>
 
 <script>

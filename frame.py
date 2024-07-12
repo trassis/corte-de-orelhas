@@ -1,31 +1,22 @@
-import frameOptions
-
-# Retorna o valor do scale para os pontos preencherem width x height
-def set_scale(width, height, list_of_points):
-    if len(list_of_points) == 0:
-        return 1
-
-    xlim = max([ point.x for point in list_of_points ])
-    ylim = max([ point.y for point in list_of_points ])
-
-    xlim *= 1.1
-    ylim *= 1.1
-
-    return min(width/xlim, height/ylim)
+from frameOptions import FrameOptions
 
 # Implementa um frame para um conjunto de pontos
 class Frame:
     def __init__(self, polygon, points_colors=[], opacity=1.0):
-        self.points = polygon.points
-
-        if len(points_colors) == 0:
-            self.points_colors = ["black"] * len(polygon.points)
+        if polygon == None:
+            self.points = []
+            self.points_colors = []
         else:
-            self.points_colors = points_colors
+            self.points = polygon.points
 
-        self.height = frameOptions.global_height()
-        self.width = frameOptions.global_width()
-        self.scale = set_scale(self.width, self.height, self.points)
+            if len(points_colors) == 0:
+                self.points_colors = ["black"] * len(polygon.points)
+            else:
+                self.points_colors = points_colors
+
+        self.height = FrameOptions.height
+        self.width = FrameOptions.width
+        self.scale = FrameOptions.scale
         self.opacity = opacity
 
         self.background_svg = ''
