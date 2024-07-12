@@ -4,9 +4,11 @@ from frame import Triangle_Frame, FrameOptions, clear_frames
 import html_generator
 
 class Coloring:
-    def __init__(self, triangulated_polygon, height, width, scale):
-        self.polygon = triangulated_polygon
-        self.n = triangulated_polygon.number_of_triangles()
+    def __init__(self, tpolygon, height, width, scale):
+        self.polygon = tpolygon
+        self.n = tpolygon.number_of_triangles()
+
+        ## mudar
         self.options = FrameOptions(height, width, scale)
 
         self.color = [0]*self.polygon.number_of_vertices()

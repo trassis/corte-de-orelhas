@@ -1,6 +1,7 @@
 from geometry import Point
 
 class Polygon:
+<<<<<<< HEAD
     def __init__(self, file_name='', points=[], copy_polygon=None):
         if copy_polygon != None:
             self.size = copy_polygon.size
@@ -8,6 +9,16 @@ class Polygon:
         else:
             self.size = len(points)
             self.points = points
+=======
+    def __init__(self, file_name='', points=None):
+        self.size = len(points)
+        self.points = points
+
+        if file_name.endswith('.txt'):
+            self.read_from_file(file_name)
+        elif file_name.endswith('.pol'):
+            self.read_from_pol(file_name)
+>>>>>>> 754eeb3384d062780a393dfe77ec694f34a5da13
 
             if file_name.endswith('.txt'):
                 self.read_from_file(file_name)
