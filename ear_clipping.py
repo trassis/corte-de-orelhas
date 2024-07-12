@@ -1,4 +1,5 @@
 import tpolygon
+import epolygon
 
 # Retorna índice da primeira verdade em um lista de Bool
 def search_true(x):
@@ -17,7 +18,7 @@ def remaining_edges(triangle):
 
 class Ear_clipping:
     def __init__(self, initial_polygon):
-        self.polygon_list = [ initial_polygon ]
+        self.polygon_list = [ epolygon(initial_polygon) ]
         self.frame_list = []
 
     # Retorna o polígono triangulado e os frames da animação

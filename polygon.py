@@ -8,7 +8,7 @@ class Polygon:
 
         if file_name.endswith('.txt'):
             self.read_from_file(file_name)
-        else:
+        elif file_name.endswith('.pol'):
             self.read_from_pol(file_name)
 
 

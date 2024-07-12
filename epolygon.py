@@ -4,8 +4,8 @@ import frame
 
 class EPolygon(Polygon):
 
-    def __init__(self, file_name='', points=None, ear_list=[]):
-        super().__init__(self, file_name='', points=None)
+    def __init__(self, polygon, ear_list=[]):
+        super().__init__(points = polygon.points)
 
         if len(ear_list) == 0:
             self.ear_list = [False]*self.size
@@ -70,7 +70,8 @@ class EPolygon(Polygon):
 
         return [ new_epolygon, new_edge, new_triangle, new_frames ]
     
-    
+    def create_ear_frame()
+
     # Itera sobre todos os vértices para descobrir se são orelhas
     def ear_verification_frames(self, frame_options):
         if len(self.points) != len(self.ear_list):
