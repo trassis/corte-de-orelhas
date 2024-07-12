@@ -1,7 +1,7 @@
 import ear_clipping
-import tpolygon
 import os
-import frameOptions
+import coloring
+from frameOptions import FrameOptions
 
 def clear_frames():
     pasta = './frames'
@@ -17,49 +17,30 @@ def clear_frames():
 # HTML para a animação
 def _ear_clipping_html(obj):
     for i, frame in enumerate(obj.frame_list):
-        with open(f"./frames/frame{i}.svg", "w") as file:
+        with open(f"./triangulation_frames/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), FrameOptions.width, FrameOptions.height)
+    return _get(len(obj.frame_list), './triangulation_frames')
 
+# HTML para a animação
 def _coloring_html(obj):
-    
-    obj.solve()
     for i, frame in enumerate(obj.frame_list):
-        # frame.set_background(colored)
-        with open(f"./frames/frame{i}.svg", "w") as file:
+        with open(f"./coloring_frames/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), frameOptions.global_width(), frameOptions.global_height())
-    
-
-
-# HTML para só um tpolygon
-def _tpolygon_html(obj):
-        frame = obj.get_frame()
-
-        with open(f"./frames/frame0.svg", "w") as file:
-            file.write(frame.generate_svg())
-
-        print('oi')
-
-        # MUDAR AQUI
-        return _get(1, 400, 400)
+    return _get(len(obj.frame_list), './coloring_frames')
 
 def generate_html(to_be_printed):
     if isinstance(to_be_printed, ear_clipping.Ear_clipping):
         return _ear_clipping_html(to_be_printed);
 
-    if isinstance(to_be_printed, tpolygon.TPolygon):
-        return _tpolygon_html(to_be_printed);
-
     if isinstance(to_be_printed, coloring.Coloring):
-        return _coloring_html(to_be_printed);
+        return _coloring_html(to_be_printed)
 
     else:
         raise ValueError("Not implemented yet")
 
-def _get(number_of_frames, height, width):
+def _get(number_of_frames, folder_name):
     return """
 <!DOCTYPE html>
 <html>
@@ -155,7 +136,7 @@ def _get(number_of_frames, height, width):
     }
 
     function displayPolygon(){
-        var filename = `./frames/frame${currentIndex}.svg`;
+        var filename = `""" + folder_name + """/frame${currentIndex}.svg`;
         fetchSVGContent(filename, function(svgContent) {
             var svg = document.getElementById('svgelem');
             svg.innerHTML = svgContent;
@@ -219,7 +200,7 @@ def _get(number_of_frames, height, width):
 </head>
 <body>
 <h2>Triangulação de polígonos</h2>
-<svg id="svgelem" width=""""" + str(width) + " height=" + str(height) + """ xmlns="http://www.w3.org/2000/svg">
+<svg id="svgelem" width=""""" + str(FrameOptions.width) + " height=" + str(FrameOptions.height) + """ xmlns="http://www.w3.org/2000/svg">
 </svg>
 <br>
 <button onclick="previousPolygon()">Previous Polygon</button>
