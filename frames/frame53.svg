@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600">
+<polygon points="109.091,109.091 218.182,109.091 218.182,218.182 436.364,218.182 436.364,436.364 545.455,436.364 545.455,545.455 327.273,545.455 327.273,327.273 109.091,327.273" class="polygon" opacity="0.4"/>
+<circle cx="109.091" cy="109.091" class="black_point" opacity="0.4"/>
+<circle cx="218.182" cy="109.091" class="black_point" opacity="0.4"/>
+<circle cx="218.182" cy="218.182" class="black_point" opacity="0.4"/>
+<circle cx="436.364" cy="218.182" class="black_point" opacity="0.4"/>
+<circle cx="436.364" cy="436.364" class="black_point" opacity="0.4"/>
+<circle cx="545.455" cy="436.364" class="black_point" opacity="0.4"/>
+<circle cx="545.455" cy="545.455" class="black_point" opacity="0.4"/>
+<circle cx="327.273" cy="545.455" class="black_point" opacity="0.4"/>
+<circle cx="327.273" cy="327.273" class="black_point" opacity="0.4"/>
+<circle cx="109.091" cy="327.273" class="black_point" opacity="0.4"/>
+<line x1="109.091" y1="327.273" x2="218.182" y2="109.091" class="edge_style" opacity="0.4"/>
+<line x1="109.091" y1="327.273" x2="218.182" y2="218.182" class="edge_style" opacity="0.4"/>
+<line x1="109.091" y1="327.273" x2="436.364" y2="218.182" class="edge_style" opacity="0.4"/>
+<line x1="436.364" y1="436.364" x2="545.455" y2="545.455" class="edge_style" opacity="0.4"/>
+<line x1="436.364" y1="436.364" x2="327.273" y2="545.455" class="edge_style" opacity="0.4"/>
+<line x1="436.364" y1="218.182" x2="327.273" y2="545.455" class="edge_style" opacity="0.4"/>
+<line x1="436.364" y1="218.182" x2="327.273" y2="327.273" class="edge_style" opacity="0.4"/>
+<polygon points="436.364,218.182 327.273,327.273 109.091,327.273" class="polygon" opacity="1.0"/>
+<circle cx="436.364" cy="218.182" class="black_point" opacity="1.0"/>
+<circle cx="327.273" cy="327.273" class="black_point" opacity="1.0"/>
+<circle cx="109.091" cy="327.273" class="green_point" opacity="1.0"/>
+<line x1="109.0909090909091" y1="327.27272727272725" x2="327.27272727272725" y2="327.27272727272725" class="line_style"/></svg>

@@ -43,6 +43,3 @@ class TPolygonFrame(Frame):
             svg_content += f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style" opacity="{self.opacity}"/>\n'
 
         return svg_content
-
-    def highlight_triangle(self, triangle_idx):
-        self.triangles_colors[triangle_idx] = "red"
