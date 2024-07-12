@@ -1,31 +1,32 @@
 from frame import Frame
 
 # Frame que representa um tpolygon
+# Cor dos vértices dada por color_list
+# Pode destacar um triângulo idx
 class TPolygonFrame(Frame):
-    def __init__(self, tpolygon, opacity=1.0, color_list=None): 
-        super().__init__(polygon=tpolygon, opacity=opacity)
+    def __init__(self, tpolygon, opacity=1.0, points_colors=[], idx=-1): 
+        super().__init__(polygon=tpolygon, points_colors=points_colors, opacity=opacity)
 
         self.triangle_number = tpolygon.number_of_triangles()
         self.vertex_number = tpolygon.get_size()
         self.tpolygon = tpolygon
 
-        if color_list == None:
-            color_list = ["black"] * self.vertex_number
-
-        self.triangles_colors = ["blue"]*self.triangle_number
+        self.triangles_colors = ["black"]*self.triangle_number
+        if idx != -1:
+            self.triangles_colors[idx] = "red"
 
         self.middle_ground_svg += self._get_edges_svg()
         self.foreground_svg += self._get_foreground()
 
-
+    # Desenha triângulos destacados (se houver)
     def _get_foreground(self):
         svg_content = '' 
-        # Desenha triângulos destacados (se houver)
         for i in range(self.triangle_number):
             if self.triangles_colors[i] == "red":
-                triangle_string = ' '.join([f'{round(point.x*self.scale, 3)},{round(point.y*self.scale, 3)}' for point in self.tpolygon.get_points()])
+                indices = self.tpolygon.vertices_of_triangle(i)
+                points = [ self.tpolygon.points[i] for i in indices ]
+                triangle_string = ' '.join([f'{round(point.x*self.scale, 3)},{round(point.y*self.scale, 3)}' for point in points ])
                 svg_content += f'<polygon points="{triangle_string}" class="red_triangle" opacity="{self.opacity}"/>\n'
-
 
         return svg_content
 

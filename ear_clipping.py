@@ -48,7 +48,7 @@ class Ear_clipping:
             self.frame_list += removal_frames
 
         # Adiciona ultimo triangulo
-        # triangles.append([ point.idx for point in current_polygon.points ])
+        triangles.append([ point.idx for point in current_polygon.points ])
 
         # Frame vazio para visualizar o fim
         self.frame_list.append(EmptyEarFrame())

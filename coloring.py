@@ -1,45 +1,47 @@
 from queue import Queue
-from frame import TPolygonFrame
-from html_generator import clear_frames
-import html_generator 
+from tframe import TPolygonFrame
 
 class Coloring:
     def __init__(self, tpolygon):
-        self.polygon = tpolygon
+        self.tpolygon = tpolygon
         self.n = tpolygon.number_of_triangles()
 
-    
-        self.color = [0]*self.polygon.get_size()
+        self.points_colors = ["black"] * self.tpolygon.size
         self.frame_list = []
 
     def solve(self):
         vis = [False]*self.n
 
-        initial_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color)
+        initial_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors)
         self.frame_list.append(initial_frame)
 
         q = Queue()
         q.put(0)
         vis[0] = True
 
-        x,y,z = self.polygon.vertices_of_triangle(0) 
-        self.color[x] = 1
-        self.color[y] = 2
-        self.color[z] = 3
+        # Colore os vértices do triangulo inicial
+        x,y,z = self.tpolygon.vertices_of_triangle(0) 
+        self.points_colors[x] = "blue"
+        self.points_colors[y] = "red"
+        self.points_colors[z] = "green"
+
+        coloring_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=0)
+        self.frame_list.append(coloring_frame)
 
         while not q.empty():
             v = q.get()
-            for u in self.polygon.neighbors(v):
+            for u in self.tpolygon.neighbors(v):
                 if not vis[u]:
                     vis[u] = True
                     q.put(u)
 
-                    red_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color, idx = u)
+                    red_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=u)
                     self.frame_list.append(red_frame)
 
-                    only_in_v = self.polygon.subtract_neighbors(v, u)
-                    not_colored = self.polygon.subtract_neighbors(u, v)
-                    self.color[not_colored] = self.color[only_in_v]
+                    # Obtém nova cor do vértice
+                    only_in_v = self.tpolygon.subtract_neighbors(v, u)
+                    not_colored = self.tpolygon.subtract_neighbors(u, v)
+                    self.points_colors[not_colored] = self.points_colors[only_in_v]
 
-                    colored_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color)
+                    colored_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors)
                     self.frame_list.append(colored_frame)
