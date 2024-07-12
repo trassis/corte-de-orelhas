@@ -1,14 +1,17 @@
 from frame import Frame
 from tframe import TPolygonFrame
-from epolygon import EPolygon
 
 # Frame que mostra orelhas em verde, e possui tpolygon de plano de fundo
 # Deixa colorir um ponto idx com a cor color
 class EarFrame(Frame):
     def __init__(self, epolygon, idx=-1, color="black"):
-        points_colors = self._get_points_colors(epolygon.ear_list)
-        if idx != -1:
-            points_colors[idx] = color
+        if epolygon != None:
+            points_colors = self._get_points_colors(epolygon.ear_list)
+            if idx != -1:
+                points_colors[idx] = color
+        else:
+            points_colors = []
+
         super().__init__(polygon=epolygon, points_colors=points_colors)
 
     def _get_points_colors(self, ear_list):
@@ -26,7 +29,7 @@ class EarFrame(Frame):
 # Frame vazio, só com plano de fundo
 class EmptyEarFrame(EarFrame):
     def __init__(self):
-        super().__init__(epolygon=EPolygon(points=[]))
+        super().__init__(epolygon=None)
 
 # Frame que representa a verificação de se um ponto é orelha
 class VerifyEarFrame(EarFrame):

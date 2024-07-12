@@ -1,6 +1,6 @@
 import tpolygon
-import epolygon
-from frame import Frame, EmptyFrame
+from epolygon import EPolygon
+from eframe import EarFrame, EmptyEarFrame
 
 # Retorna índice da primeira verdade em um lista de Bool
 def search_true(x):
@@ -19,19 +19,23 @@ def remaining_edges(triangle):
 
 class Ear_clipping:
     def __init__(self, polygon):
-        self.polygon_list = [ epolygon.EPolygon(copy_polygon=polygon) ]
-        self.frame_list = [ Frame(polygon) ]
+        initial_epolygon = EPolygon(copy_polygon=polygon) 
+
+        self.polygon_list = [ initial_epolygon ]
+        self.frame_list = [ EarFrame(initial_epolygon) ]
 
     # Retorna o polígono triangulado e os frames da animação
     def triangulation(self):
         edges = [] # Arestas da triangulação
         triangles = [] # Triangulos da triangulação
 
-        # Adiciona os frames do polígono inicial
+        # Computa todas as orelhas iniciais
         current_polygon = self.polygon_list[0]
-        self.frame_list += current_polygon.ear_verification_frames()
+        for i in range(current_polygon.size):
+            update_frames = current_polygon.update_ear_list(i)
+            self.frame_list += update_frames
 
-        # Remove orelha e atualiza polígono
+        # Remove orelhas até poligono ter 3 pontos
         while current_polygon.get_size() > 3:
             new_polygon, new_edge, new_triangle, removal_frames = current_polygon.remove_ear()
 
@@ -47,7 +51,7 @@ class Ear_clipping:
         # triangles.append([ point.idx for point in current_polygon.points ])
 
         # Frame vazio para visualizar o fim
-        self.frame_list.append(EmptyFrame())
+        self.frame_list.append(EmptyEarFrame())
 
         # Coloca resultado no plano de fundo
         triangulated = tpolygon.TPolygon(self.polygon_list[0].points, edges, triangles)
@@ -56,6 +60,5 @@ class Ear_clipping:
 
         return triangulated
 
-    
     def get_polygons(self):
         return self.polygon_list

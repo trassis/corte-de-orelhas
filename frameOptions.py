@@ -1,12 +1,18 @@
-def global_height():
-    return 500
-
-def global_width():
-    return 500
-
 class FrameOptions:
-    def __init__(self, scale, width, height, opacity=1.0):
-        self.scale = scale
-        self.width = width
-        self.height = height
-        self.opacity = opacity
+    height = 700
+    width = 500
+    scale = 5
+
+    @classmethod
+    def set(cls, polygon, width, height):
+        cls.width = width
+        cls.height = height
+
+        xlim = 0
+        ylim = 0
+        for point in polygon.points:
+            xlim = max(xlim, point.x)
+            ylim = max(ylim, point.y)
+        xlim *= 1.1
+        ylim *= 1.1
+        cls.scale = min(width/xlim, height/ylim)
