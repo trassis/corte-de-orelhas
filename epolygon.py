@@ -1,6 +1,6 @@
 from polygon import Polygon
 from geometry import angle, in_triangle, Point
-import frame
+from eframe import VerifyEarFrame
 
 class EPolygon(Polygon):
     def __init__(self, file_name='', points=None, ear_list=[], copy_polygon=None):
@@ -34,9 +34,26 @@ class EPolygon(Polygon):
 
         return True
     
+    # Itera sobre todos os vértices para descobrir se são orelhas
+    def ear_verification_frames(self):
+        frames = []
+        for i in range(self.size):
+            verify_frame = VerifyEarFrame(epolygon=self, idx=i)
+            frames.append(verify_frame)
+
+            if self.is_ear(i):
+                self.ear_list[i] = True
+
+        return frames
+
+    # Encontra uma orelha e remove ela
     def remove_ear(self):
         ear_index = self.ear_list.index(True)
+
         new_frames = []
+
+        removal_frame = RemoveEarFrame(self, ear_index)
+        new_frames.append(removal_frame)
 
         # Cria polígono sem orelha
         new_epolygon = self.create_new_epolygon(ear_index)
@@ -44,21 +61,13 @@ class EPolygon(Polygon):
         # Atualiza as orelhas do novo polígono
         previous_index = (ear_index-1) % new_epolygon.get_size()
         next_index = ear_index % new_epolygon.get_size()
-
-        # Computa os frames
         for index in [ previous_index, next_index ]:
-            verify_frame = frame.VerifyEarFrame(epolygon=new_epolygon, idx=index)
+            verify_frame = VerifyEarFrame(epolygon=new_epolygon, idx=index)
             new_frames.append(verify_frame)
 
             new_epolygon.ear_list[index] = new_epolygon.is_ear(index)
 
-            response_frame = frame.VerifyEarFrame(epolygon=new_epolygon, idx=index)
-            
-            if new_epolygon.ear_list[index]:
-                response_frame.set_point_color(index, "red")
-            else:
-                response_frame.set_point_color(index, "black")
-
+            response_frame = VerifyEarFrame(epolygon=new_epolygon, idx=index)
             new_frames.append(response_frame)
 
         # Pega o triangulo formado e a aresta criada
@@ -66,28 +75,6 @@ class EPolygon(Polygon):
         new_edge = self.create_new_edge(ear_index)
 
         return [ new_epolygon, new_edge, new_triangle, new_frames ]
-    
-    # Itera sobre todos os vértices para descobrir se são orelhas
-    def ear_verification_frames(self):
-        if len(self.points) != len(self.ear_list):
-            raise ValueError(len(self.points), len(self.ear_list))
-
-        frames = []
-        for i in range(self.size):
-            verify_frame = frame.VerifyEarFrame(epolygon=self, idx=i)
-            frames.append(verify_frame)
-
-            response_frame = frame.VerifyEarFrame(epolygon=self, idx=i)
-
-            if self.is_ear(i):
-                self.ear_list[i] = True
-                response_frame.set_point_color(i, "green")
-            else:
-                response_frame.set_point_color(i, "black")
-
-            frames.append(response_frame)
-
-        return frames
 
     # Cria um polígono sem a orelha especificada
     def create_new_epolygon(self, ear_index):
