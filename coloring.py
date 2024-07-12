@@ -1,24 +1,22 @@
-"""
 from queue import Queue
-from frame import Triangle_Frame, FrameOptions, clear_frames
-import html_generator
+from frame import TPolygonFrame
+from html_generator import clear_frames
+import html_generator 
 
 class Coloring:
-    def __init__(self, tpolygon, height, width, scale):
+    def __init__(self, tpolygon):
         self.polygon = tpolygon
         self.n = tpolygon.number_of_triangles()
 
-        ## mudar
-        self.options = FrameOptions(height, width, scale)
-
-        self.color = [0]*self.polygon.number_of_vertices()
-        self.frames = []
+    
+        self.color = [0]*self.polygon.get_size()
+        self.frame_list = []
 
     def solve(self):
         vis = [False]*self.n
 
-        initial_frame = Triangle_Frame(self.polygon, self.color, self.options)
-        self.frames.append(initial_frame)
+        initial_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color)
+        self.frame_list.append(initial_frame)
 
         q = Queue()
         q.put(0)
@@ -36,23 +34,12 @@ class Coloring:
                     vis[u] = True
                     q.put(u)
 
-                    red_frame = Triangle_Frame(self.polygon, self.color, self.options)
-                    red_frame.highlight_triangle(u)
-                    self.frames.append(red_frame)
+                    red_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color, idx = u)
+                    self.frame_list.append(red_frame)
 
                     only_in_v = self.polygon.subtract_neighbors(v, u)
                     not_colored = self.polygon.subtract_neighbors(u, v)
                     self.color[not_colored] = self.color[only_in_v]
 
-                    colored_frame = Triangle_Frame(self.polygon, self.color, self.options)
-                    self.frames.append(colored_frame)
-
-    def generate_html(self):
-        clear_frames() 
-
-        for i, frame in enumerate(self.frames):
-            with open(f"./frames/frame{i}.svg", "w") as file:
-                file.write(frame.generate_svg())
-
-        return html_generator.get(len(self.frames), self.options.width, self.options.height)
-"""
+                    colored_frame = TPolygonFrame(tpolygon=self.polygon, color_list =self.color)
+                    self.frame_list.append(colored_frame)

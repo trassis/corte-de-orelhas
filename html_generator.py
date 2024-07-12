@@ -2,6 +2,7 @@ import ear_clipping
 import tpolygon
 import os
 import frameOptions
+import coloring
 
 def clear_frames():
     pasta = './frames'
@@ -24,6 +25,18 @@ def _ear_clipping_html(obj):
 
     return _get(len(obj.frame_list), frameOptions.global_width(), frameOptions.global_height())
 
+def _coloring_html(obj):
+    
+    obj.solve()
+    for i, frame in enumerate(obj.frame_list):
+        # frame.set_background(colored)
+        with open(f"./frames/frame{i}.svg", "w") as file:
+            file.write(frame.generate_svg())
+
+    return _get(len(obj.frame_list), frameOptions.global_width(), frameOptions.global_height())
+    
+
+
 # HTML para só um tpolygon
 def _tpolygon_html(obj):
     frame = obj.get_frame()
@@ -43,6 +56,9 @@ def generate_html(to_be_printed):
     if isinstance(to_be_printed, tpolygon.TPolygon):
         return _tpolygon_html(to_be_printed);
 
+    if isinstance(to_be_printed, coloring.Coloring):
+        return _coloring_html(to_be_printed);
+
     else:
         raise ValueError("Not implemented yet")
 
@@ -55,6 +71,7 @@ def _get(number_of_frames, height, width):
     <style>
         #svgelem {
             border: 1px solid #ccc;
+            background: white
         }
 
         .polygon {

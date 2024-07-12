@@ -58,10 +58,9 @@ class Frame:
         return svg_content
 
         
-
 # Frame que representa um tpolygon
 class TPolygonFrame(Frame):
-    def __init__(self, tpolygon, opacity=1.0, color_list=None): 
+    def __init__(self, tpolygon, opacity=1.0, color_list=None, idx=-1): 
         super().__init__(polygon=tpolygon, opacity=opacity)
 
         self.triangle_number = tpolygon.number_of_triangles()
@@ -73,16 +72,20 @@ class TPolygonFrame(Frame):
 
         self.triangles_colors = ["blue"]*self.triangle_number
 
+        if idx != -1:
+            self.triangles_colors[idx] = "red"
+
         self.foreground_svg += self._get_edges_svg()
         self.foreground_svg = self._get_foreground()
 
-
     def _get_foreground(self):
-        svg_content = []
+        svg_content = ''
         # Desenha triângulos destacados (se houver)
         for i in range(self.triangle_number):
             if self.triangles_colors[i] == "red":
-                triangle_string = ' '.join([f'{point.x*self.scale},{point.y*self.scale}' for point in self.tpolygon.get_points()])
+                triangle_index = self.tpolygon.vertices_of_triangle(i)
+                triangle_coordinates = [self.tpolygon.points[idx] for idx in triangle_index]
+                triangle_string = ' '.join([f'{point.x*self.scale},{point.y*self.scale}' for point in triangle_coordinates])
                 svg_content += f'<polygon points="{triangle_string}" class="red_triangle" opacity="{self.opacity}"/>\n'
 
 
@@ -102,9 +105,6 @@ class TPolygonFrame(Frame):
             svg_content += f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" class="edge_style" opacity="{self.opacity}"/>\n'
 
         return svg_content
-
-    def highlight_triangle(self, triangle_idx):
-        self.triangles_colors[triangle_idx] = "red"
 
 # Frame que representa a verificação de se um ponto é orelha
 # Tpolygon no argumento é o plano de fundo
