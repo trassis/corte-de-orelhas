@@ -67,8 +67,6 @@ class EPolygon(Polygon):
 
         return [ new_epolygon, new_edge, new_triangle, new_frames ]
     
-    def create_ear_frame()
-
     # Itera sobre todos os vértices para descobrir se são orelhas
     def ear_verification_frames(self):
         if len(self.points) != len(self.ear_list):
