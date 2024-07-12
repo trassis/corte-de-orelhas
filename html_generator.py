@@ -1,22 +1,28 @@
 import ear_clipping
 import tpolygon
+import os
+import frameOptions
+
+def clear_frames():
+    pasta = './frames'
+    for arquivo in os.listdir(pasta):
+        caminho_arquivo = os.path.join(pasta, arquivo)
+        try:
+            if os.path.isfile(caminho_arquivo):
+                os.unlink(caminho_arquivo)
+
+        except Exception as e:
+            raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
 
 # HTML para a animação
 def _ear_clipping_html(obj):
-    # Sem background por enquanto
-    """
-    frame.clear_frames()
-
-    zero_list = [ 0 ]* self.polygon_list[0].get_size()
-    background_frame = frame.Triangle_Frame(self.get_result(), zero_list, self.frame_options, 0.2)
-    """
-
+    triangulated = obj.triangulation()
     for i, frame in enumerate(obj.frame_list):
+        frame.set_background(triangulated)
         with open(f"./frames/frame{i}.svg", "w") as file:
-            # file.write(frame.generate_svg(background_frame))
-            file.write(frame.generate_svg(None))
+            file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), obj.frame_options.width, obj.frame_options.height)
+    return _get(len(obj.frame_list), frameOptions.global_width(), frameOptions.global_height())
 
 # HTML para só um tpolygon
 def _tpolygon_html(obj):

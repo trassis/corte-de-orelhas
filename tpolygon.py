@@ -1,6 +1,5 @@
 import polygon
 import frame
-import frameOptions
 
 class TPolygon(polygon.Polygon):
     def __init__(self, points, edges, triangles):
@@ -10,7 +9,7 @@ class TPolygon(polygon.Polygon):
         self.triangles = triangles
 
         colors = ["Black"]*len(points)
-        self.frame = frame.Triangle_Frame(self, colors)
+        self.frame = frame.TPolygonFrame(self, color_list=colors)
 
     def number_of_triangles(self):
         return len(self.triangles)

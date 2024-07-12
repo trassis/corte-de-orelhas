@@ -1,18 +1,22 @@
-import frame
 from geometry import Point
 
 class Polygon:
-    def __init__(self, file_name='', points=None):
-        self.size = len(points)
-        self.points = points
-
-        if file_name.endswith('.txt'):
-            self.read_from_file(file_name)
+    def __init__(self, file_name='', points=[], copy_polygon=None):
+        if copy_polygon != None:
+            self.size = copy_polygon.size
+            self.points = copy_polygon.points.copy()
         else:
-            self.read_from_pol(file_name)
+            self.size = len(points)
+            self.points = points
 
+            if file_name.endswith('.txt'):
+                self.read_from_file(file_name)
+            elif file_name.endswith('.pol'):
+                self.read_from_pol(file_name)
+            elif file_name != '':                 
+                raise FileNotFoundError("Não foi implementado leitura desse tipo de arquivo")
 
-    #le do arquivo .txt
+    # Lê do arquivo .txt
     def read_from_file(self, file_name):
         self.points = []
         with open(file_name, 'r') as file:
@@ -21,7 +25,7 @@ class Polygon:
                 x, y = map(int, file.readline().strip().split())
                 self.points.append(Point(x,y,i))
 
-    #le do arquivo .pol
+    # Lê do arquivo .pol
     def read_from_pol(self, file_path):
         self.points = []
         with open(file_path, 'r') as file:

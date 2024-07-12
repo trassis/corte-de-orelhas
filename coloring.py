@@ -1,3 +1,4 @@
+"""
 from queue import Queue
 from frame import Triangle_Frame, FrameOptions, clear_frames
 import html_generator
@@ -52,3 +53,4 @@ class Coloring:
                 file.write(frame.generate_svg())
 
         return html_generator.get(len(self.frames), self.options.width, self.options.height)
+"""
