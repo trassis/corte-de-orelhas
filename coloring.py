@@ -45,3 +45,15 @@ class Coloring:
 
                     colored_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, description='Triângulo colorido!')
                     self.frame_list.append(colored_frame)
+
+        # Conta a quantidade de cada cor
+        c1, c2, c3 = 0, 0, 0
+        for i in range(len(self.points_colors)):
+            if self.points_colors[i] == "blue":
+                c1 += 1
+            if self.points_colors[i] == "red":
+                c2 += 1
+            if self.points_colors[i] == "green":
+                c3 += 1
+
+        return [ c1, c2, c3 ]
