@@ -1,51 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Animation</title>
-    <style>
-        #animation {
-            width: 500px; /* Defina a largura desejada para a animação */
-            height: 500px; /* Defina a altura desejada para a animação */
-            position: relative;
-        }
-        .frame {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div id="animation"></div>
-    <script>
-        const frames = 30; // Número total de frames
-        const animationDiv = document.getElementById('animation');
+<div>
+    <h2>Triangulação de polígonos - Animation 0</h2>
+    <svg id="svgelem0" width="600" height="600" xmlns="http://www.w3.org/2000/svg"></svg>
+    <br>
+    <button onclick="previousPolygon0()">Previous Polygon</button>
+    <button onclick="nextPolygon0()">Next Polygon</button>
+    <button onclick="reset0()">Reset</button>
+    <button onclick="end0()">End</button>
+    <button onclick="startAutoPlay0()">Start AutoPlay</button>
+    <button onclick="stopAutoPlay0()">Stop AutoPlay</button>
+    <br>
+    <label for="speedRange0">Autoplay Frequency (ms): </label>
+    <input type="range" id="speedRange0" min="50" max="1010" value="100" step="50" oninput="changeSpeed0(this.value)">
+    <span id="speedValue0">100</span> ms
+</div>
+<style>
+    #svgelem0 {
+        border: 1px solid #ccc;
+        background: lightyellow;
+    }
 
-        // Função para carregar todos os frames
-        for (let i = 1; i <= frames; i++) {
-            const img = document.createElement('img');
-            img.src = `coloring_frames/frame${i}.svg`;
-            img.className = 'frame';
-            animationDiv.appendChild(img);
+    .polygon {
+        fill: #ada6db;
+        stroke: #2a2a2a;
+        stroke-width: 2;
+        stroke-opacity: 1;
+        fill-opacity: 1;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .red_triangle {
+        fill: #f03e65;
+        fill-opacity: 1;
+    }
+
+    .permanent {
+        fill: rgb(178, 178, 198);
+        stroke: #908f8f;
+        stroke-width: 2;
+        stroke-opacity: 0.7;
+        fill-opacity: 0.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .point {
+        fill: #2a2a2a;
+        stroke: none;
+    }
+
+    .pointer {
+        fill: #727374;
+        stroke: none;
+    }
+
+    .black_point {
+        fill: black;
+        stroke: none;
+        r: 5;
+    }
+
+    .blue_point {
+        fill: blue;
+        stroke: none;
+        r: 5;
+    }
+
+    .red_point {
+        fill: red;
+        stroke: none;
+        r: 5;
+    }
+
+    .green_point {
+        fill: green;
+        stroke: none;
+        r: 5;
+    }
+
+    .line_style {
+        stroke-width: 2;
+        stroke: red;
+    }
+
+    .edge_style {
+        stroke-width: 2;
+        stroke: black;
+    }
+</style>
+<script>
+    var numberFrames0 = 127;
+    var currentIndex0 = 0;
+    var intervalId0;
+    var speed0 = 100;
+
+    function fetchSVGContent0(file, callback) {
+        fetch(file)
+            .then(response => response.text())
+            .then(data => callback(data))
+            .catch(error => console.error('Error fetching SVG:', error));
+    }
+
+    function displayPolygon0() {
+        var filename = `./animation0/frame${currentIndex0}.svg`;
+        fetchSVGContent0(filename, function(svgContent) {
+            var svg = document.getElementById('svgelem0');
+            svg.innerHTML = svgContent;
+            console.log(svg.innerHTML);
+        });
+    }
+
+    function nextPolygon0() {
+        if(intervalId0 && currentIndex0 == numberFrames0-1) {
+            stopAutoPlay0();
         }
-
-        let currentFrame = 0;
-
-        function showNextFrame() {
-            const frameElements = document.querySelectorAll('.frame');
-            frameElements[currentFrame].style.display = 'none';
-            currentFrame = (currentFrame + 1) % frames;
-            frameElements[currentFrame].style.display = 'block';
+        else{
+            currentIndex0 = (currentIndex0 + 1) % numberFrames0;
+            displayPolygon0();
         }
+    }
 
-        // Inicializar a animação
-        showNextFrame();
-        setInterval(showNextFrame, 100); // Troca de frame a cada 100ms
-    </script>
-</body>
-</html>
+    function previousPolygon0() {
+        currentIndex0 = (currentIndex0 - 1 + numberFrames0) % numberFrames0;
+        displayPolygon0();
+    }
+
+    function startAutoPlay0() {
+        if (!intervalId0) {
+            intervalId0 = setInterval(nextPolygon0, speed0);
+        }
+    }
+
+    function stopAutoPlay0() {
+        if (intervalId0) {
+            clearInterval(intervalId0);
+            intervalId0 = null;
+        }
+    }
+
+    function end0() {
+        stopAutoPlay0();
+        currentIndex0 = numberFrames0 - 1;
+        displayPolygon0();
+    }
+
+    function reset0() {
+        stopAutoPlay0();
+        currentIndex0 = 0;
+        displayPolygon0();
+    }
+
+    function changeSpeed0(newSpeed) {
+        if (intervalId0) {
+            stopAutoPlay0();
+            speed0 = newSpeed;
+            startAutoPlay0();
+        }
+        else{
+            speed0 = newSpeed;
+        }
+        var speedCounter0 = document.getElementById("speedValue0");
+        speedCounter0.innerText = speed0;
+    }
+
+    displayPolygon0();
+</script>
