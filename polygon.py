@@ -16,14 +16,35 @@ class Polygon:
         elif file_name != '':                 
             raise FileNotFoundError("Não foi implementado leitura desse tipo de arquivo")
 
+
+    def _reescale_points(self):
+        xmin = min([ pt.x for pt in self.points ])
+        xmax = max([ pt.x for pt in self.points ])
+        ymin = min([ pt.y for pt in self.points ])
+        ymax = max([ pt.y for pt in self.points ])
+
+        for pt in self.points:
+            pt.x -= xmin
+            pt.y -= ymin
+
+        for pt in self.points:
+            pt.x /= (xmax-xmin)
+            pt.y /= (ymax-ymin)
+
+        for pt in self.points:
+            pt.x += 0.05
+            pt.y += 0.05
+
     # Lê do arquivo .txt
     def read_from_file(self, file_name):
         self.points = []
         with open(file_name, 'r') as file:
             self.size = int(file.readline().strip())
             for i in range(self.size):
-                x, y = map(int, file.readline().strip().split())
+                x, y = map(float, file.readline().strip().split())
                 self.points.append(Point(x,y,i))
+
+        self._reescale_points()
 
     # Lê do arquivo .pol
     def read_from_pol(self, file_path):
@@ -45,25 +66,7 @@ class Polygon:
                 y = r / s
                 self.points.append(Point(x, y, i))
 
-        self.ear_list = [False]*self.size
-
-        xmin = min([ pt.x for pt in self.points ])
-        xmax = max([ pt.x for pt in self.points ])
-        ymin = min([ pt.y for pt in self.points ])
-        ymax = max([ pt.y for pt in self.points ])
-
-        for pt in self.points:
-            pt.x -= xmin
-            pt.y -= ymin
-
-        for pt in self.points:
-            pt.x /= (xmax-xmin)
-            pt.y /= (ymax-ymin)
-
-        for pt in self.points:
-            pt.x += 0.05
-            pt.y += 0.05
-
+        self._reescale_points()
 
     # retorna quantidade de pontos
     def get_size(self):
