@@ -43,8 +43,7 @@
             margin: 10px;
         }
 
-        .svg-column {
-        }
+
 
         .controls-column {
             margin-left: 10px; /* Space between SVG and controls */
@@ -124,6 +123,15 @@
         .edge_style {
             stroke-width: 1;
             stroke: black;
+        }
+
+        .small-text {
+            font-size: 15px; /* Ajuste o valor conforme necessário */
+        }
+
+        .bold{
+            color:#393839;
+            font-weight: bold;
         }
     </style>
     <script>
@@ -337,7 +345,7 @@
     </header>
 
     <main>
-        <h2>Introdução</h2>
+        <h2>Problema da Galeria de Artes</h2>
         <p> Imagine que você é dono de uma galeria de artes muito famosa em sua cidade e que,
             devido a tal fama, sua propriedade acaba sendo alvo de inúmeros assaltos. Você, em busca
             de uma solução, pensou em instalar câmeras de forma a cobrir toda área da galeria, mas
@@ -347,7 +355,7 @@
 
         <p>
             Bem, se algum dia você passou por esse cenário, ou talvez, por um parecido, parabéns! Você
-            se deparou com o famoso "Problema da Galeria de Artes"!. Mas, para a sua infelicidade, trago más
+            se deparou com o famoso <span class="bold">"Problema da Galeria de Artes"</span>! Mas, para a sua infelicidade, trago más
             notícias: esse problema não apenas aparenta ser complexo: ele é de fato muito complexo. Ele é tão
             complexo que faz parte de uma classe de complexidade denominada "NP-dificuldade". Isso significa que
             caso você queira montar um programa no computador que te responda a quantidade de câmeras ótima
@@ -360,14 +368,14 @@
             custará muito...
         </p>
 
-        <h3 style="margin-bottom: 1px;">Triangulação de polígonos - Animação</h3>
+        <h3 style="margin-bottom: 1px;">Triangulação de polígonos</h3>
         <p>
         Nós resolveremos o seu problema com uma simples observação: sua galeria de artes pode ser representada como um
         polígono, certo? E se você reparar bem, um polígono pode ser dividido em diversos triângulos menores. Então a ideia é posicionar as
         câmeras em pontos estratégicos nesses triângulos internos, de forma a fazer com que uma câmera cubra muitos triângulos de uma só vez.
         </p>
-        <p> Para ilustrar, imagine que sua sala seja o polígono abaixo. A animação mostrará como podemos dividi-la em triângulos menores, basta você clicar
-            no botão "AutoPlay" e ajustar a frequência na barra abaixo como quiser.
+        <p> Para ilustrar, imagine que sua sala seja o polígono abaixo. A animação mostrará como podemos dividi-la em triângulos menores. Basta você clicar
+            no botão do meio, <span class="bold">"AutoPlay"</span>, e ajustar a frequência na barra abaixo como quiser.
         </p>
 
         <div class="mycontainer">
@@ -387,29 +395,30 @@
                 <button class="button" onclick="reset0()"><span class="material-icons">skip_previous</span></button>
                 <button class="button" onclick="end0()"><span class="material-icons">skip_next</span></button>
                 <br>
-                <label for="speedRange0">Frequência do reprodutor: 
-                    <span id="speedValue0">500</span> ms
+                <label for="speedRange0" class="small-text">Frequência do reprodutor: 
+                    <span id="speedValue0" class="small-text">500</span> ms
                 </label>
                 <br>
                 <input type="range" id="speedRange0" min="100" max="1000" value="500" step="100" oninput="changeSpeed0(this.value)" style="width: 300px;">
             </div>
         </div>
 
-        <p> Fazer essa triangulação não é tão difícil. Utilizamos um método chamado 'corte de orelhas', onde examinamos cada vértice para determinar se ele é uma 'orelha'. 
+        <p> Fazer essa triangulação não é tão difícil. Utilizamos um método chamado 'corte de orelhas', onde examinamos cada vértice para determinar se ele é, ou não, uma 'orelha'. 
             Um vértice orelha deve ser convexo e, junto com seus vizinhos, formar um triângulo que não inclua outros vértices internamente.
         </p>
-        <p> Você pode acompanhar isso sendo feito frame a frame na animação com os botões "Next" e "End". Perceba que pra cada vértice, simulamos qual seria o triânulo formado
-            por ele e seus vizinhos. Caso o vértice seja uma orelha, marcamos-no de verde.
+        <p> Você pode acompanhar isso sendo feito frame a frame na animação com os botões no canto esquerdo, <span class="bold">"Previous"</span> e <span class="bold">"Next"</span>. Para ver o início ou o fim do algoritmo, clique nos botões no canto direito
+            <span class="bold">"Begin"</span> e <span class="bold">"End"</span>.  Analise o passo a passo detalhadamente e perceba que para cada vértice, simulamos qual seria o triângulo formado por ele e seus vizinhos. Caso o vértice seja uma orelha, ele é marcado de verde, 
+            caso contrário, ele permanece preto.
         </p>
         <p> Perceba que após passar por todos os vértices, começamos a remover as orelhas, mantendo apenas um cuidado: quando uma orelha é removida, o status de seus vizinhos
             pode mudar, isto é, eles podem se tornar orelhas ou deixarem de ser, portanto, devemos atualizá-los.
         </p>
 
-        <h2> Coloração dos vérticecs - Animation 1</h2>
+        <h3> Coloração dos vértices</h3>
         <p> Agora que temos uma triangulação, vamos colorir os vértices do nosso polígono da seguinte maneira:
         </p>
         <p> Escolhemos um triângulo inicial e colorimos todos os seus vértices de cores diferentes. Depois, colorimos os vértices dos triângulos adjacentes. Mas perceba: um triângulo é
-            adjacente a outro se somente se eles possuem dois vértices em comum. Portanto, ao olhar para um triângulo adjcente, apenas um vértice dele não estará colorido e, portanto,
+            adjacente a outro se somente se eles possuem dois vértices em comum. Portanto, ao olhar para um triângulo adjcente, apenas um vértice dele não estará colorido e, por isso,
             teremos apenas uma escolha de cor possível para atribuí-lo.
         </p>
 
@@ -430,17 +439,21 @@
                 <button class="button" onclick="reset1()"><span class="material-icons">skip_previous</span></button>
                 <button class="button" onclick="end1()"><span class="material-icons">skip_next</span></button>
                 <br>
-                <label for="speedRange1">Frequência do reprodutor: 
-                    <span id="speedValue1">500</span> ms
+                <label for="speedRange1" class="small-text">Frequência do reprodutor: 
+                    <span id="speedValue1" class="small-text">500</span> ms
                 </label>
                 <br>
                 <input type="range" id="speedRange1" min="100" max="1000" value="500" step="100" oninput="changeSpeed1(this.value)" style="width: 300px;">
             </div>
         </div>
 
-
+        <h3>
+            Custo final
+        </h3>
         <p>
-        oi
+            Perceba que escolhendo apenas um conjunto de vértices de mesma cor, conseguimos posicionar as câmeras e cobrir toda área do polígono. E, como a partir desse algoritmo sempre conseguimos
+            encontrar uma 3-coloração, é possível garantir que o gasto máximo em câmeras é um terço da quantidade inicial de vértices da sala, não importa seu formato! Que incrível! Com isso, mostramos que,
+            apesar do problema ser difícil, é possível achar soluções talvez não ótimas, mas boas o suficiente para serem aplicadas.
         </p>
 
     </main>
