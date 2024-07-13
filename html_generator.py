@@ -55,9 +55,9 @@ def _get(num_frames, index):
     <span id="speedValue{index}">100</span> ms
 </div>
 <style>
-    #svgelem {{
+    #svgelem{index} {{
         border: 1px solid #ccc;
-        background: white;
+        background: lightyellow;
     }}
 
     .polygon {{
