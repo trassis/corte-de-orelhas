@@ -1,167 +1,377 @@
-<div>
-    <h2>Triangulação de polígonos - Animation 0</h2>
-    <svg id="svgelem0" width="600" height="600" xmlns="http://www.w3.org/2000/svg"></svg>
-    <br>
-    <button onclick="previousPolygon0()">Previous Polygon</button>
-    <button onclick="nextPolygon0()">Next Polygon</button>
-    <button onclick="reset0()">Reset</button>
-    <button onclick="end0()">End</button>
-    <button onclick="startAutoPlay0()">Start AutoPlay</button>
-    <button onclick="stopAutoPlay0()">Stop AutoPlay</button>
-    <br>
-    <label for="speedRange0">Autoplay Frequency (ms): </label>
-    <input type="range" id="speedRange0" min="50" max="1010" value="100" step="50" oninput="changeSpeed0(this.value)">
-    <span id="speedValue0">100</span> ms
-</div>
-<style>
-    #svgelem0 {
-        border: 1px solid #ccc;
-        background: lightyellow;
-    }
-
-    .polygon {
-        fill: #ada6db;
-        stroke: #2a2a2a;
-        stroke-width: 2;
-        stroke-opacity: 1;
-        fill-opacity: 1;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .red_triangle {
-        fill: #f03e65;
-        fill-opacity: 1;
-    }
-
-    .permanent {
-        fill: rgb(178, 178, 198);
-        stroke: #908f8f;
-        stroke-width: 2;
-        stroke-opacity: 0.7;
-        fill-opacity: 0.4;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
-    .point {
-        fill: #2a2a2a;
-        stroke: none;
-    }
-
-    .pointer {
-        fill: #727374;
-        stroke: none;
-    }
-
-    .black_point {
-        fill: black;
-        stroke: none;
-        r: 5;
-    }
-
-    .blue_point {
-        fill: blue;
-        stroke: none;
-        r: 5;
-    }
-
-    .red_point {
-        fill: red;
-        stroke: none;
-        r: 5;
-    }
-
-    .green_point {
-        fill: green;
-        stroke: none;
-        r: 5;
-    }
-
-    .line_style {
-        stroke-width: 2;
-        stroke: red;
-    }
-
-    .edge_style {
-        stroke-width: 2;
-        stroke: black;
-    }
-</style>
-<script>
-    var numberFrames0 = 127;
-    var currentIndex0 = 0;
-    var intervalId0;
-    var speed0 = 100;
-
-    function fetchSVGContent0(file, callback) {
-        fetch(file)
-            .then(response => response.text())
-            .then(data => callback(data))
-            .catch(error => console.error('Error fetching SVG:', error));
-    }
-
-    function displayPolygon0() {
-        var filename = `./animation0/frame${currentIndex0}.svg`;
-        fetchSVGContent0(filename, function(svgContent) {
-            var svg = document.getElementById('svgelem0');
-            svg.innerHTML = svgContent;
-            console.log(svg.innerHTML);
-        });
-    }
-
-    function nextPolygon0() {
-        if(intervalId0 && currentIndex0 == numberFrames0-1) {
-            stopAutoPlay0();
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Problema da Galeria de Arte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
         }
-        else{
-            currentIndex0 = (currentIndex0 + 1) % numberFrames0;
+        header {
+            background-color: #C594f2;
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #C594f2;
+            color: white;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .controls button,
+        .controls input {
+            padding: 5px;
+            width: 60px;
+            font-size: 0.8rem;
+        }
+        .controls label {
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Problema da Galeria de Arte</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Introdução</h2>
+            <p> Imagine que você é dono de uma galeria de artes muito famosa em sua cidade e que,
+                devido a tal fama, sua propriedade acaba sendo alvo de inúmeros assaltos. Você, em busca
+                de uma solução, pensou em instalar câmeras de forma a cobrir toda área da galeria, mas
+                não sabe ao certo quantas câmeras deve comprar para que seu investimento seja o mínimo
+                possível, mas ainda sim não deixe nenhum canto de sua propriedade sem cobertura.
+            </p>
+
+            <p>
+                Bem, se algum dia você passou por esse cenário, ou talvez, por um parecido, parabéns! Você 
+                se deparou com o famoso "Problema da Galeria de Artes"!. Mas, para a sua infelicidade, trago más
+                notícias: esse problema não apenas aparenta ser complexo: ele é de fato muito complexo. Ele é tão 
+                complexo que faz parte de uma classe de complexidade denominada "NP-dificuldade". Isso significa que
+                caso você queira montar um programa no computador que te responda a quantidade de câmeras ótima
+                que você deve comprar, você não conseguirá fazer isso em tempo polinomial, ou seja, dependendo
+                do tamanho da sua galeria, essa resposta pode demorar muito tempo para ser computada...
+            </p>
+            <p>
+                Mas não se preocupe! Aqui nesse site te mostraremos um algoritmo bem mais simples e rápido que te dará
+                uma resposta boa para seu problema. Talvez não seja a melhor resposta, mas ela é boa o suficiente e não te
+                custará muito...
+            </p>
+        </section>
+        <div style = "display: flex; flex-direction: column; align-items: flex-start;">
+            <h3 style="margin-bottom: 1px;">Triangulação de polígonos - Animação</h3>
+            <p>
+            Nós resolveremos o seu problema com uma simples observação: sua galeria de artes pode ser representada como um
+            polígono, certo? E se você reparar bem, um polígono pode ser dividido em diversos triângulos menores. Então a ideia é posicionar as
+            câmeras em pontos estratégicos nesses triângulos internos, de forma a fazer com que uma câmera cubra muitos triângulos de uma só vez.
+            </p>
+            <p> Para ilustrar, imagine que sua sala seja o polígono abaixo. A animação mostrará como podemos dividi-la em triângulos menores, basta você clicar 
+                no botão "AutoPlay" e ajustar a frequência na barra abaixo como quiser.
+            </p>
+            <svg id="svgelem0" width="400" height="400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+            </svg>            
+            <br>
+            <div class="controls">
+                <button onclick="previousPolygon0()">Previous</button>
+                <button onclick="nextPolygon0()">Next</button>
+                <button onclick="reset0()">Reset</button>
+                <button onclick="end0()">End</button>
+                <button onclick="startAutoPlay0()">AutoPlay</button>
+                <button onclick="stopAutoPlay0()">Stop</button>
+            </div>
+            <br>
+            <label for="speedRange0">Frequency (ms): </label>
+            <input type="range" id="speedRange0" min="50" max="1010" value="100" step="50" oninput="changeSpeed0(this.value)" style="width: 400px; color: #C594f2;">
+            <span id="speedValue0">100</span> ms
+        </div>
+        <p>Fazer essa triangulação não é tão difícil. Utilizamos um método chamado 'corte de orelhas', onde examinamos cada vértice para determinar se ele é uma 'orelha'. 
+            Um vértice orelha deve ser convexo e, junto com seus vizinhos, formar um triângulo que não inclua outros vértices internamente.
+
+        </p>
+        <p> Você pode acompanhar isso sendo feito frame a frame na animação com os botões "Next" e "End". Perceba que pra cada vértice, simulamos qual seria o triânulo formado
+            por ele e seus vizinhos. Caso o vértice seja uma orelha, marcamos-no de verde.
+        </p>
+        <p> Perceba que após passar por todos os vértices, começamos a remover as orelhas, mantendo apenas um cuidado: quando uma orelha é removida, o status de seus vizinhos 
+            pode mudar, isto é, eles podem se tornar orelhas ou deixarem de ser, portanto, devemos atualizá-los.
+        </p>
+                
+        <h2> Coloração dos vérticecs - Animation 1</h2>
+        <p> Agora que temos uma triangulação, vamos colorir os vértices do nosso polígono da seguinte maneira:
+        </p/>
+        <p> Escolhemos um triângulo inicial e colorimos todos os seus vértices de cores diferentes. Depois, colorimos os vértices dos triângulos adjacentes. Mas perceba: um triângulo é 
+            adjacente a outro se somente se eles possuem dois vértices em comum. Portanto, ao olhar para um triângulo adjcente, apenas um vértice dele não estará colorido e, portanto,
+            teremos apenas uma escolha de cor possível para atribuí-lo.
+
+        <svg id="svgelem1" width="400" height="400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+        </svg>            
+        <br>
+        <div class="controls">
+            <button onclick="previousPolygon1()">Previous</button>
+            <button onclick="nextPolygon1()">Next</button>
+            <button onclick="reset1()">Reset</button>
+            <button onclick="end1()">End</button>
+            <button onclick="startAutoPlay1()">AutoPlay</button>
+            <button onclick="stopAutoPlay1()">Stop</button>
+        </div>
+        <br>
+        <label for="speedRange1">Frequency (ms): </label>
+        <input type="range" id="speedRange1" min="50" max="1010" value="100" step="50" oninput="changeSpeed0(this.value)" style="width: 400px; color: #C594f2;">
+        <span id="speedValue1">100</span> ms
+    </div>
+
+            <style>
+            #svgelem0 {
+                border: 1px solid #ccc;
+                background: lightyellow;
+                margin-top: 1rem;
+                width: 100%;
+                height: auto;
+                max-width: 400px; /* Diminuir o tamanho máximo do SVG */
+            }
+
+            #svgelem1 {
+                border: 1px solid #ccc;
+                background: lightyellow;
+                margin-top: 1rem;
+                width: 100%;
+                height: auto;
+                max-width: 400px; /* Diminuir o tamanho máximo do SVG */
+            }
+
+            .polygon {
+                fill: #C594f2;
+                stroke: #2a2a2a;
+                stroke-width: 2;
+                stroke-opacity: 1;
+                fill-opacity: 1;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            .red_triangle {
+                fill: #f03e65;
+                fill-opacity: 1;
+            }
+
+            .black_point {
+                fill: black;
+                stroke: none;
+                r: 5;
+            }
+            
+            .blue_point {
+                fill: blue;
+                stroke: none;
+                r: 5;
+            }
+
+            .red_point {
+                fill: red;
+                stroke: none;
+                r: 5;
+            }
+            
+            .green_point {
+                fill: green;
+                stroke: none;
+                r: 5;
+            }
+
+            .line_style {
+                stroke-width: 2;
+                stroke: red;
+            }
+            
+            .edge_style {
+                stroke-width: 2;
+                stroke: black;
+            }
+
+            #svgelem1 {                
+                border: 1px solid #ccc;
+                background: lightyellow;
+                margin-top: 1rem;
+                width: 100%;
+                height: auto;
+                max-width: 400px; /* Diminuir o tamanho máximo do SVG */
+            }
+
+
+        </style>
+        <script>
+            var numberFrames0 = 127;
+            var currentIndex0 = 0;
+            var intervalId0;
+            var speed0 = 100;
+
+            function fetchSVGContent0(file, callback) {
+                fetch(file)
+                    .then(response => response.text())
+                    .then(data => callback(data))
+                    .catch(error => console.error('Error fetching SVG:', error));
+            }
+            
+            function displayPolygon0() {
+                var filename = `./animation0/frame${currentIndex0}.svg`;
+                fetchSVGContent0(filename, function(svgContent) {
+                    var svg = document.getElementById('svgelem0');
+                    svg.innerHTML = svgContent;
+                    console.log(svg.innerHTML);
+                });
+            }
+
+            function nextPolygon0() {
+                if(intervalId0 && currentIndex0 == numberFrames0-1) {
+                    stopAutoPlay0();
+                } else {
+                    currentIndex0 = (currentIndex0 + 1) % numberFrames0;
+                    displayPolygon0();
+                }
+            }
+            
+            function previousPolygon0() {
+                currentIndex0 = (currentIndex0 - 1 + numberFrames0) % numberFrames0;
+                displayPolygon0();
+            }
+            
+            function startAutoPlay0() {
+                if (!intervalId0) {
+                    intervalId0 = setInterval(nextPolygon0, speed0);
+                }
+            }
+            
+            function stopAutoPlay0() {
+                if (intervalId0) {
+                    clearInterval(intervalId0);
+                    intervalId0 = null;
+                }
+            }
+            
+            function end0() {
+                stopAutoPlay0();
+                currentIndex0 = numberFrames0 - 1;
+                displayPolygon0();
+            }
+            
+            function reset0() {
+                stopAutoPlay0();
+                currentIndex0 = 0;
+                displayPolygon0();
+            }
+
+            function changeSpeed0(newSpeed) {
+                if (intervalId0) {
+                    stopAutoPlay0();
+                    speed0 = newSpeed;
+                    startAutoPlay0();
+                } else {
+                    speed0 = newSpeed;
+                }
+                var speedCounter0 = document.getElementById("speedValue0");
+                speedCounter0.innerText = speed0;
+            }
+            
             displayPolygon0();
-        }
-    }
+        </script>
+        <script>
+            var numberFrames1 = 36;
+            var currentIndex1 = 0;
+            var intervalId1;
+            var speed1 = 100;
+        
+            function fetchSVGContent1(file, callback) {
+                fetch(file)
+                    .then(response => response.text())
+                    .then(data => callback(data))
+                    .catch(error => console.error('Error fetching SVG:', error));
+            }
+        
+            function displayPolygon1() {
+                var filename = `./animation1/frame${currentIndex1}.svg`;
+                fetchSVGContent1(filename, function(svgContent) {
+                    var svg = document.getElementById('svgelem1');
+                    svg.innerHTML = svgContent;
+                    console.log(svg.innerHTML);
+                });
+            }
+        
+            function nextPolygon1() {
+                if(intervalId1 && currentIndex1 == numberFrames1-1) {
+                    stopAutoPlay1();
+                }
+                else{
+                    currentIndex1 = (currentIndex1 + 1) % numberFrames1;
+                    displayPolygon1();
+                }
+            }
+        
+            function previousPolygon1() {
+                currentIndex1 = (currentIndex1 - 1 + numberFrames1) % numberFrames1;
+                displayPolygon1();
+            }
+        
+            function startAutoPlay1() {
+                if (!intervalId1) {
+                    intervalId1 = setInterval(nextPolygon1, speed1);
+                }
+            }
+        
+            function stopAutoPlay1() {
+                if (intervalId1) {
+                    clearInterval(intervalId1);
+                    intervalId1 = null;
+                }
+            }
+        
+            function end1() {
+                stopAutoPlay1();
+                currentIndex1 = numberFrames1 - 1;
+                displayPolygon1();
+            }
+        
+            function reset1() {
+                stopAutoPlay1();
+                currentIndex1 = 0;
+                displayPolygon1();
+            }
+        
+            function changeSpeed1(newSpeed) {
+                if (intervalId1) {
+                    stopAutoPlay1();
+                    speed1 = newSpeed;
+                    startAutoPlay1();
+                }
+                else{
+                    speed1 = newSpeed;
+                }
+                var speedCounter1 = document.getElementById("speedValue1");
+                speedCounter1.innerText = speed1;
+            }
+        
+            displayPolygon1();
+        </script>
 
-    function previousPolygon0() {
-        currentIndex0 = (currentIndex0 - 1 + numberFrames0) % numberFrames0;
-        displayPolygon0();
-    }
-
-    function startAutoPlay0() {
-        if (!intervalId0) {
-            intervalId0 = setInterval(nextPolygon0, speed0);
-        }
-    }
-
-    function stopAutoPlay0() {
-        if (intervalId0) {
-            clearInterval(intervalId0);
-            intervalId0 = null;
-        }
-    }
-
-    function end0() {
-        stopAutoPlay0();
-        currentIndex0 = numberFrames0 - 1;
-        displayPolygon0();
-    }
-
-    function reset0() {
-        stopAutoPlay0();
-        currentIndex0 = 0;
-        displayPolygon0();
-    }
-
-    function changeSpeed0(newSpeed) {
-        if (intervalId0) {
-            stopAutoPlay0();
-            speed0 = newSpeed;
-            startAutoPlay0();
-        }
-        else{
-            speed0 = newSpeed;
-        }
-        var speedCounter0 = document.getElementById("speedValue0");
-        speedCounter0.innerText = speed0;
-    }
-
-    displayPolygon0();
-</script>
+    </main>
+    <footer>
+        <p>&copy; 2024 Triangulação de Polígonos. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
