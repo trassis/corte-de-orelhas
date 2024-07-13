@@ -2,7 +2,7 @@ from frameOptions import FrameOptions
 
 # Implementa um frame para um conjunto de pontos
 class Frame:
-    def __init__(self, polygon, points_colors=[], opacity=1.0):
+    def __init__(self, polygon, points_colors=[], opacity=1.0, description=''):
         if polygon == None:
             self.points = []
             self.points_colors = []
@@ -13,6 +13,8 @@ class Frame:
                 self.points_colors = ["black"] * len(polygon.points)
             else:
                 self.points_colors = points_colors
+
+        self.description = description
 
         self.height = FrameOptions.height
         self.width = FrameOptions.width
@@ -36,6 +38,9 @@ class Frame:
         # Cor de fundo do poligono
         points_string = ' '.join([f'{round(point.x*self.scale, 3)},{round(point.y*self.scale, 3)}' for point in self.points])
         return f'<polygon points="{points_string}" class="polygon" opacity="{self.opacity}"/>\n'
+
+    def get_description(self):
+        return self.description
 
     # Todo frame possui cor de fundo para poligono e cor para os pontos
     # Pode adicionar um plano de fundo (ex: polígono triangulado)

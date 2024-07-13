@@ -1,0 +1,127 @@
+Polígono inicial
+Verificando se vértice é orelha
+Vértice é orelha
+Verificando se vértice é orelha
+Vértice é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice é orelha
+Verificando se vértice é orelha
+Vértice é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Verificando se vértice é orelha
+Vértice não é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice é orelha
+Vértice que será removido
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Atualizando vizinhos: Verificando se vértice é orelha
+Atualizando vizinhos: Vértice não é orelha
+Fim da triangulação

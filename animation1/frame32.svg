@@ -17,7 +17,7 @@
 <line x1="218.182" y1="218.182" x2="163.636" y2="272.727" class="edge_style" opacity="1.0"/>
 <line x1="218.182" y1="109.091" x2="163.636" y2="272.727" class="edge_style" opacity="1.0"/>
 <line x1="218.182" y1="109.091" x2="163.636" y2="163.636" class="edge_style" opacity="1.0"/>
-<polygon points="545.455,436.364 490.909,545.455 490.909,490.909" class="red_triangle" opacity="1.0"/>
+<polygon points="545.455,436.364 490.909,545.455 490.909,490.909" class="highlight_polygon" opacity="1.0"/>
 <circle cx="54.545" cy="54.545" class="red_point" opacity="1.0"/>
 <circle cx="109.091" cy="54.545" class="green_point" opacity="1.0"/>
 <circle cx="109.091" cy="109.091" class="red_point" opacity="1.0"/>
