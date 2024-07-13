@@ -20,7 +20,7 @@ def _ear_clipping_html(obj):
         with open(f"./triangulation_frames/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), './triangulation_frames')
+    return _get(len(obj.frame_list), './triangulation_frames', 1)
 
 # HTML para a animação
 def _coloring_html(obj):
@@ -28,7 +28,7 @@ def _coloring_html(obj):
         with open(f"./coloring_frames/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), './coloring_frames')
+    return _get(len(obj.frame_list), './coloring_frames', 2)
 
 def generate_html(to_be_printed):
     if isinstance(to_be_printed, ear_clipping.Ear_clipping):
@@ -40,7 +40,7 @@ def generate_html(to_be_printed):
     else:
         raise ValueError("Not implemented yet")
 
-def _get(number_of_frames, folder_name):
+def _get(number_of_frames, folder_name, idx):
     return """
 <!DOCTYPE html>
 <html>
@@ -123,7 +123,7 @@ def _get(number_of_frames, folder_name):
     }
 </style>
 <script>
-    var numberFrames = """ + str(number_of_frames) + """;
+    var numberFrames""" + str(idx) + " = " + str(number_of_frames) + """;
     var currentIndex = 0;
     var intervalId;
     var speed = 100;
