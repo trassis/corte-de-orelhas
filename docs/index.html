@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Animation</title>
+    <style>
+        #animation {
+            width: 500px; /* Defina a largura desejada para a animação */
+            height: 500px; /* Defina a altura desejada para a animação */
+            position: relative;
+        }
+        .frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="animation"></div>
+    <script>
+        const frames = 30; // Número total de frames
+        const animationDiv = document.getElementById('animation');
+
+        // Função para carregar todos os frames
+        for (let i = 1; i <= frames; i++) {
+            const img = document.createElement('img');
+            img.src = `coloring_frames/frame${i}.svg`;
+            img.className = 'frame';
+            animationDiv.appendChild(img);
+        }
+
+        let currentFrame = 0;
+
+        function showNextFrame() {
+            const frameElements = document.querySelectorAll('.frame');
+            frameElements[currentFrame].style.display = 'none';
+            currentFrame = (currentFrame + 1) % frames;
+            frameElements[currentFrame].style.display = 'block';
+        }
+
+        // Inicializar a animação
+        showNextFrame();
+        setInterval(showNextFrame, 100); // Troca de frame a cada 100ms
+    </script>
+</body>
+</html>
