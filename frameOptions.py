@@ -13,6 +13,6 @@ class FrameOptions:
         for point in polygon.points:
             xlim = max(xlim, point.x)
             ylim = max(ylim, point.y)
-        xlim *= 1.1 
-        ylim *= 1.1 
+        xlim *= 1.05 
+        ylim *= 1.05 
         cls.scale = min(width/xlim, height/ylim)

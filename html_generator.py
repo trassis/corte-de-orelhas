@@ -65,9 +65,10 @@ def _get(num_frames, index, animation_name):
             <button class="button" onclick="reset{index}()"><span class="material-icons">skip_previous</span></button>
             <button class="button" onclick="end{index}()"><span class="material-icons">skip_next</span></button>
             <br>
-            <label for="speedRange{index}">Autoplay Frequency (ms): </label>
-            <input type="range" id="speedRange{index}" min="100" max="1000" value="100" step="100" oninput="changeSpeed{index}(this.value)">
-            <span id="speedValue{index}">100</span> ms
+            <label for="speedRange{index}">Frequência do reprodutor: 
+                <span id="speedValue{index}">500</span> ms
+            </label>
+            <input type="range" id="speedRange{index}" min="100" max="1000" value="500" step="100" oninput="changeSpeed{index}(this.value)" style="width: 300px;">
         </div>
     </div>
 </div>
@@ -84,6 +85,7 @@ def _get(num_frames, index, animation_name):
 
     .controls-column {{
         margin-left: 10px; /* Space between SVG and controls */
+        overflow-wrap: break-word;
     }}
 
     .button {{
@@ -125,25 +127,25 @@ def _get(num_frames, index, animation_name):
     .black_point {{
         fill: black;
         stroke: none;
-        r: 5;
+        r: 4;
     }}
 
     .blue_point {{
         fill: #edec77;
         stroke: black;
-        r: 5;
+        r: 4;
     }}
 
     .red_point {{
         fill: #eb445d;
         stroke: black;
-        r: 5;
+        r: 4;
     }}
 
     .green_point {{
         fill: #65f077;
         stroke: black;
-        r: 5;
+        r: 4;
     }}
 
     .line_style {{
@@ -160,7 +162,7 @@ def _get(num_frames, index, animation_name):
     var numberFrames{index} = {num_frames};
     var currentIndex{index} = 0;
     var intervalId{index};
-    var speed{index} = 100;
+    var speed{index} = 500;
 
     function fetchSVGContent{index}(file, callback) {{
         fetch(file)

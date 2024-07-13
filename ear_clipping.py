@@ -51,7 +51,7 @@ class Ear_clipping:
         triangles.append([ point.idx for point in current_polygon.points ])
 
         # Frame vazio para visualizar o fim
-        self.frame_list.append(EmptyEarFrame('Fim da triangulação'))
+        self.frame_list.append(EmptyEarFrame('Polígono triangulado!'))
 
         # Coloca resultado no plano de fundo
         triangulated = tpolygon.TPolygon(self.polygon_list[0].points, edges, triangles)

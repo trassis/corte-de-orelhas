@@ -47,6 +47,24 @@ class Polygon:
 
         self.ear_list = [False]*self.size
 
+        xmin = min([ pt.x for pt in self.points ])
+        xmax = max([ pt.x for pt in self.points ])
+        ymin = min([ pt.y for pt in self.points ])
+        ymax = max([ pt.y for pt in self.points ])
+
+        for pt in self.points:
+            pt.x -= xmin
+            pt.y -= ymin
+
+        for pt in self.points:
+            pt.x /= (xmax-xmin)
+            pt.y /= (ymax-ymin)
+
+        for pt in self.points:
+            pt.x += 0.05
+            pt.y += 0.05
+
+
     # retorna quantidade de pontos
     def get_size(self):
         return self.size
