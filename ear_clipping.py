@@ -22,7 +22,7 @@ class Ear_clipping:
         initial_epolygon = EPolygon(copy_polygon=polygon) 
 
         self.polygon_list = [ initial_epolygon ]
-        self.frame_list = [ EarFrame(initial_epolygon) ]
+        self.frame_list = [ EarFrame(initial_epolygon, description='Polígono inicial') ]
 
     # Retorna o polígono triangulado e os frames da animação
     def triangulation(self):
@@ -51,7 +51,7 @@ class Ear_clipping:
         triangles.append([ point.idx for point in current_polygon.points ])
 
         # Frame vazio para visualizar o fim
-        self.frame_list.append(EmptyEarFrame())
+        self.frame_list.append(EmptyEarFrame('Fim da triangulação'))
 
         # Coloca resultado no plano de fundo
         triangulated = tpolygon.TPolygon(self.polygon_list[0].points, edges, triangles)

@@ -35,17 +35,17 @@ class EPolygon(Polygon):
         return True
 
     # Atualiza a lista de orelhas nessa posição e gera frames
-    def update_ear_list(self, idx):
+    def update_ear_list(self, idx, text=''):
         frames = []
-        verify_frame = VerifyEarFrame(epolygon=self, idx=idx, color="red")
+        verify_frame = VerifyEarFrame(epolygon=self, idx=idx, color="red", description=text+'Verificando se vértice é orelha')
         frames.append(verify_frame)
 
         response_frame = None
         if self.is_ear(idx):
-            response_frame = VerifyEarFrame(epolygon=self, idx=idx, color="green")
+            response_frame = VerifyEarFrame(epolygon=self, idx=idx, color="green", description=text+'Vértice é orelha')
             self.ear_list[idx] = True
         else:
-            response_frame = VerifyEarFrame(epolygon=self, idx=idx, color="black")
+            response_frame = VerifyEarFrame(epolygon=self, idx=idx, color="black", description=text+'Vértice não é orelha')
             self.ear_list[idx] = False 
 
         frames.append(response_frame)
@@ -58,7 +58,7 @@ class EPolygon(Polygon):
 
         new_frames = []
 
-        removal_frame = EarFrame(self, idx=ear_index, color="red")
+        removal_frame = EarFrame(self, idx=ear_index, color="red", description='Vértice que será removido')
         new_frames.append(removal_frame)
 
         # Cria polígono sem orelha
@@ -68,7 +68,7 @@ class EPolygon(Polygon):
         previous_index = (ear_index-1) % new_epolygon.get_size()
         next_index = ear_index % new_epolygon.get_size()
         for index in [ previous_index, next_index ]:
-            new_frames += new_epolygon.update_ear_list(index)
+            new_frames += new_epolygon.update_ear_list(index, 'Atualizando vizinhos: ')
 
         # Pega o triangulo formado e a aresta criada
         new_triangle = self.create_new_triangle(ear_index)

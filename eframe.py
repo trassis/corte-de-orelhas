@@ -4,7 +4,7 @@ from tframe import TPolygonFrame
 # Frame que mostra orelhas em verde, e possui tpolygon de plano de fundo
 # Deixa colorir um ponto idx com a cor color
 class EarFrame(Frame):
-    def __init__(self, epolygon, idx=-1, color="black"):
+    def __init__(self, epolygon, idx=-1, color="black", description=''):
         if epolygon != None:
             points_colors = self._get_points_colors(epolygon.ear_list)
             if idx != -1:
@@ -12,7 +12,7 @@ class EarFrame(Frame):
         else:
             points_colors = []
 
-        super().__init__(polygon=epolygon, points_colors=points_colors)
+        super().__init__(polygon=epolygon, points_colors=points_colors, description=description)
 
     def _get_points_colors(self, ear_list):
         points_colors = ["black"] * len(ear_list)
@@ -28,13 +28,13 @@ class EarFrame(Frame):
 
 # Frame vazio, só com plano de fundo
 class EmptyEarFrame(EarFrame):
-    def __init__(self):
-        super().__init__(epolygon=None)
+    def __init__(self, description):
+        super().__init__(epolygon=None, description=description)
 
 # Frame que representa a verificação de se um ponto é orelha
 class VerifyEarFrame(EarFrame):
-    def __init__(self, epolygon, idx, color):
-        super().__init__(epolygon=epolygon, idx=idx, color=color)
+    def __init__(self, epolygon, idx, color, description):
+        super().__init__(epolygon=epolygon, idx=idx, color=color, description=description)
         self._draw_red_edge(idx)
 
     # Desenha uma aresta entre os vizinhos do ponto idx

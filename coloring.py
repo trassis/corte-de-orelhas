@@ -12,7 +12,7 @@ class Coloring:
     def solve(self):
         vis = [False]*self.n
 
-        initial_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors)
+        initial_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, description='Polígono Triângulado')
         self.frame_list.append(initial_frame)
 
         q = Queue()
@@ -25,7 +25,7 @@ class Coloring:
         self.points_colors[y] = "red"
         self.points_colors[z] = "green"
 
-        coloring_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=0)
+        coloring_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=0, description='Colorindo o triângulo inicial')
         self.frame_list.append(coloring_frame)
 
         while not q.empty():
@@ -35,7 +35,7 @@ class Coloring:
                     vis[u] = True
                     q.put(u)
 
-                    red_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=u)
+                    red_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, idx=u, description='Próximo triângulo a colorir')
                     self.frame_list.append(red_frame)
 
                     # Obtém nova cor do vértice
@@ -43,5 +43,5 @@ class Coloring:
                     not_colored = self.tpolygon.subtract_neighbors(u, v)
                     self.points_colors[not_colored] = self.points_colors[only_in_v]
 
-                    colored_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors)
+                    colored_frame = TPolygonFrame(tpolygon=self.tpolygon, points_colors=self.points_colors, description='Triângulo colorido!')
                     self.frame_list.append(colored_frame)

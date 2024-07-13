@@ -19,50 +19,97 @@ def clear_frames():
             raise MemoryError(f"Erro ao deletar {caminho_arquivo}: {e}")
 
 # HTML para a animação
-def _generate_html(obj, idx):
+def _generate_html(obj, idx, name):
     create_folder_if_not_exists(f'./animation{idx}')
+
+    # Escreve cada svg
     for i, frame in enumerate(obj.frame_list):
         with open(f"./animation{idx}/frame{i}.svg", "w") as file:
             file.write(frame.generate_svg())
 
-    return _get(len(obj.frame_list), idx)
+    # Escreve as descrições
+    description = ('\n').join([ frame.get_description() for frame in obj.frame_list ])
+    with open(f"./animation{idx}/text.txt", "w") as file:
+        file.write(description)
+
+    return _get(len(obj.frame_list), idx, name)
 
 def generate_html(to_be_printed):
     if isinstance(to_be_printed, ear_clipping.Ear_clipping):
-        return _generate_html(to_be_printed, 0);
+        return _generate_html(to_be_printed, 0, "Triangulação de polígonos");
 
     if isinstance(to_be_printed, coloring.Coloring):
-        return _generate_html(to_be_printed, 1)
+        return _generate_html(to_be_printed, 1, "Colorindo uma triangulação")
 
     else:
         raise ValueError("Not implemented yet")
 
-def _get(num_frames, index):
+def _get(num_frames, index, animation_name):
     return f"""
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div>
-    <h2>Triangulação de polígonos - Animation {index}</h2>
-    <svg id="svgelem{index}" width="{FrameOptions.width}" height="{FrameOptions.height}" xmlns="http://www.w3.org/2000/svg"></svg>
-    <br>
-    <button onclick="previousPolygon{index}()">Previous Polygon</button>
-    <button onclick="nextPolygon{index}()">Next Polygon</button>
-    <button onclick="reset{index}()">Reset</button>
-    <button onclick="end{index}()">End</button>
-    <button onclick="startAutoPlay{index}()">Start AutoPlay</button>
-    <button onclick="stopAutoPlay{index}()">Stop AutoPlay</button>
-    <br>
-    <label for="speedRange{index}">Autoplay Frequency (ms): </label>
-    <input type="range" id="speedRange{index}" min="50" max="1010" value="100" step="50" oninput="changeSpeed{index}(this.value)">
-    <span id="speedValue{index}">100</span> ms
+    <div class="mycontainer">
+        <div class="svg-column">
+            <svg id="svgelem{index}" width="{FrameOptions.width}" height="{FrameOptions.height}" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <div class="controls-column">
+            <h2>{animation_name}</h2>
+            <br>
+            <span id="spanelem{index}">No text yet</span>
+            <br>
+            <button class="button" onclick="previousPolygon{index}()"><span class="material-icons">fast_rewind</span></button>
+            <button class="button" onclick="nextPolygon{index}()"><span class="material-icons">fast_forward</span></button>
+            <button class="button" onclick="startAutoPlay{index}()"><span class="material-icons">play_arrow</span></button>
+            <button class="button" onclick="stopAutoPlay{index}()"><span class="material-icons">pause</span></button>
+            <button class="button" onclick="reset{index}()"><span class="material-icons">skip_previous</span></button>
+            <button class="button" onclick="end{index}()"><span class="material-icons">skip_next</span></button>
+            <br>
+            <label for="speedRange{index}">Autoplay Frequency (ms): </label>
+            <input type="range" id="speedRange{index}" min="100" max="1000" value="100" step="100" oninput="changeSpeed{index}(this.value)">
+            <span id="speedValue{index}">100</span> ms
+        </div>
+    </div>
 </div>
 <style>
+    .mycontainer {{
+        display: flex; /* Use flexbox for side-by-side layout */
+        align-items: center; /* Center items vertically */
+        width: 100%;
+        height: 100%;
+    }}
+
+    .svg-column {{
+    }}
+
+    .controls-column {{
+        margin-left: 10px; /* Space between SVG and controls */
+    }}
+
+    .button {{
+        color: black; /* Text color */
+        background-color: white; /* Button background */
+        border: 1px solid black; /* Button border */
+        padding: 5px 5px; /* Button padding */
+        margin: 5px; /* Space between buttons */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-size: 24px; /* Font size */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth background transition */
+    }}
+
+    .button:hover {{
+        background-color: #f0f0f0; /* Light gray on hover */
+    }}
+
     #svgelem{index} {{
         border: 1px solid #ccc;
         background: lightyellow;
     }}
 
     .polygon {{
-        fill: #ada6db;
-        stroke: #2a2a2a;
+        fill: #c594f2;
+        stroke: black;
         stroke-width: 2;
         stroke-opacity: 1;
         fill-opacity: 1;
@@ -70,29 +117,9 @@ def _get(num_frames, index):
         stroke-linejoin: round;
     }}
 
-    .red_triangle {{
-        fill: #f03e65;
+    .highlight_polygon {{
+        fill: #a335de;
         fill-opacity: 1;
-    }}
-
-    .permanent {{
-        fill: rgb(178, 178, 198);
-        stroke: #908f8f;
-        stroke-width: 2;
-        stroke-opacity: 0.7;
-        fill-opacity: 0.4;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }}
-
-    .point {{
-        fill: #2a2a2a;
-        stroke: none;
-    }}
-
-    .pointer {{
-        fill: #727374;
-        stroke: none;
     }}
 
     .black_point {{
@@ -102,20 +129,20 @@ def _get(num_frames, index):
     }}
 
     .blue_point {{
-        fill: blue;
-        stroke: none;
+        fill: #edec77;
+        stroke: black;
         r: 5;
     }}
 
     .red_point {{
-        fill: red;
-        stroke: none;
+        fill: #eb445d;
+        stroke: black;
         r: 5;
     }}
 
     .green_point {{
-        fill: green;
-        stroke: none;
+        fill: #65f077;
+        stroke: black;
         r: 5;
     }}
 
@@ -125,7 +152,7 @@ def _get(num_frames, index):
     }}
 
     .edge_style {{
-        stroke-width: 2;
+        stroke-width: 1;
         stroke: black;
     }}
 </style>
@@ -142,12 +169,37 @@ def _get(num_frames, index):
             .catch(error => console.error('Error fetching SVG:', error));
     }}
 
+    function getLineFromFile{index}(fileUrl, lineNumber, callback) {{
+    fetch(fileUrl)
+        .then(response => {{
+            if (!response.ok) {{
+                throw new Error(`HTTP error! status: ${{response.status}}`);
+            }}
+            return response.text();
+        }})
+        .then(data => {{
+            const lines = data.split('\\n');
+            if (lineNumber < 0 || lineNumber >= lines.length) {{
+                console.error('Line number out of range');
+                return;
+            }}
+            callback(lines[lineNumber]); // Use callback to return the line
+        }})
+        .catch(error => console.error('Error fetching file:', error));
+    }}
+
     function displayPolygon{index}() {{
         var filename = `./animation{index}/frame${{currentIndex{index}}}.svg`;
+
         fetchSVGContent{index}(filename, function(svgContent) {{
             var svg = document.getElementById('svgelem{index}');
             svg.innerHTML = svgContent;
-            console.log(svg.innerHTML);
+
+        }});
+
+        getLineFromFile{index}('./animation{index}/text.txt', currentIndex{index}, function(line) {{
+            var spanElement = document.getElementById('spanelem{index}');
+            spanElement.textContent = line; // Update span text
         }});
     }}
 
